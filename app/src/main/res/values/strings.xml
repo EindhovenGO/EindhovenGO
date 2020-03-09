@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">EindhovenGO</string>
+    <string name="app_name">Eindhoven Go</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="help">H</string>
+    <string name="username">Username or Email</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>
