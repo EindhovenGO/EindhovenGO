@@ -12,6 +12,8 @@
         <activity android:name=".Login" />
         <activity android:name=".MainLogin" />
         <activity android:name=".SplashScreen" />
+        <activity android:name=".Signup" />
+        <activity android:name=".GSettingsActivity" />
     </application>
 
 </manifest>
