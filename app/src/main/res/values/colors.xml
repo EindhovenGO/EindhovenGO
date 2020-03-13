@@ -4,5 +4,6 @@
     <color name="lightGreen">#66A63E</color>
     <color name="white">#FFFFFF</color>
     <color name="grey">#FF353434</color>
+    <color name="background_grey">#CCC</color>
 </resources>
 
