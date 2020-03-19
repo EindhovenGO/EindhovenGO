@@ -44,8 +44,7 @@ public class MainActivity extends AppCompatActivity
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent i = new Intent(MainActivity.this, GSettingsActivity.class );
-                        startActivity(i);
+                        switchActivity(new GSettingsActivity() );
                     }
                 }, 500);
             }
@@ -104,8 +103,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_profile) {
             // Handle the camera action
-        } else if (id == R.id.nav_achievements) {
-
         } else if (id == R.id.nav_friends) {
 
         } else if (id == R.id.nav_settings) {
@@ -117,5 +114,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void switchActivity(Activity a) {
+        Intent i = new Intent(MainActivity.this, a.getClass() );
+        startActivity(i);
     }
 }
