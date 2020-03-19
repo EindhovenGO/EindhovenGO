@@ -27,8 +27,7 @@
                 android:layout_weight="40"
                 android:background="@android:color/white"
                 android:gravity="center"
-                android:padding="20dp"
-                android:text="WollaWollaWolla" />
+                android:padding="20dp" />
         </LinearLayout>
         <!-- 70% Width End-->
 
