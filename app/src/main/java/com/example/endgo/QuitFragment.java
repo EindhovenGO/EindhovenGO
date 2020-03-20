@@ -1,4 +1,13 @@
-package com.example.eindhovengo.fragments;
+package com.example.endgo;
+
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +18,8 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.eindhovengo.GSettingsActivity;
-import com.example.eindhovengo.MainActivity;
-import com.example.eindhovengo.R;
+import com.example.endgo.MainMenu;
+import com.example.endgo.R;
 
 
 public class QuitFragment extends Fragment {
@@ -38,7 +46,7 @@ public class QuitFragment extends Fragment {
         // TODO abandon mission functionality
 
         //Switch to main activity
-        Intent i = new Intent( this.getContext(), MainActivity.class);
+        Intent i = new Intent( this.getContext(), MainMenu.class);
         startActivity(i);
 
     }

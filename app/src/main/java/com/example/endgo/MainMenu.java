@@ -1,4 +1,8 @@
-package com.example.eindhovengo;
+package com.example.endgo;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,7 +28,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
-public class MainActivity extends AppCompatActivity
+public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -32,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       // setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void switchActivity(Activity a) {
-        Intent i = new Intent(MainActivity.this, a.getClass() );
+        Intent i = new Intent(MainMenu.this, a.getClass() );
         startActivity(i);
     }
 }

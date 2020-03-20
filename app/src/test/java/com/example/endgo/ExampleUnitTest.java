@@ -1,4 +1,4 @@
-package com.example.eindhovengo;
+package com.example.endgo;
 
 import org.junit.Test;
 

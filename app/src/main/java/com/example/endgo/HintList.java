@@ -1,4 +1,4 @@
-package com.example.eindhovengo.fragments;
+package com.example.endgo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

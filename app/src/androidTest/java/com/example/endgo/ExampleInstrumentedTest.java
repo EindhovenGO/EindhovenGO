@@ -1,4 +1,4 @@
-package com.example.eindhovengo;
+package com.example.endgo;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.eindhovengo", appContext.getPackageName());
+        assertEquals("com.example.endgo", appContext.getPackageName());
     }
 }

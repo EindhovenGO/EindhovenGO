@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "254388880468",
+    "firebase_url": "https://endgo-c67a4.firebaseio.com",
+    "project_id": "endgo-c67a4",
+    "storage_bucket": "endgo-c67a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254388880468:android:be4d8a40ccf1966c6359c1",
+        "android_client_info": {
+          "package_name": "com.example.endgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254388880468-3ikklm5qsp91ro2tkusq4brj6hlv4ilh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABqDEria7R3Ra4zPidoFR3rh7M45MValw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "254388880468-3ikklm5qsp91ro2tkusq4brj6hlv4ilh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

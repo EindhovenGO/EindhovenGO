@@ -1,4 +1,4 @@
-package com.example.eindhovengo.fragments;
+package com.example.endgo;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,16 +7,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eindhovengo.R;
-import com.example.eindhovengo.fragments.HintFragment.OnListFragmentInteractionListener;
-import com.example.eindhovengo.fragments.HintList.HintItem;
+import com.example.endgo.R;
+import com.example.endgo.HintFragment.OnListFragmentInteractionListener;
+import com.example.endgo.HintList.HintItem;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link HintItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- */
+
 public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
 
     private final List<HintItem> mValues;

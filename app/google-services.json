@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "878861600153",
+    "firebase_url": "https://endgo-8fdd3.firebaseio.com",
+    "project_id": "endgo-8fdd3",
+    "storage_bucket": "endgo-8fdd3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878861600153:android:10dc22489e7b86b9d3ff08",
+        "android_client_info": {
+          "package_name": "com.example.endgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "878861600153-nafkc3hoo0hma0qfjub32m7ue83j00ga.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.endgo",
+            "certificate_hash": "4b9e6ad7d8a966e458f040684f62f7224f921d84"
+          }
+        },
+        {
+          "client_id": "878861600153-2q8182uusgngdbhb8aif0h4iste4mt4h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwwCWgFksboKdmaR4lSll4bIvOQ5UICVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "878861600153-2q8182uusgngdbhb8aif0h4iste4mt4h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
