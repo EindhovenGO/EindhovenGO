@@ -35,6 +35,8 @@ public class MainMenu extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_main);
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
        // setSupportActionBar(toolbar);
 
@@ -113,6 +115,15 @@ public class MainMenu extends AppCompatActivity
 
         } else if (id == R.id.nav_shop) {
 
+        } else if (id == R.id.nav_achievements) {
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    Intent intent = new Intent(getApplicationContext(), AcheivementsActivity.class);
+                    startActivity(intent);
+                    return false;
+                }
+            });
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
