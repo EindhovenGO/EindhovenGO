@@ -1,32 +1,22 @@
 package com.example.endgo;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
-import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-
-import android.view.MenuItem;
-
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.view.Menu;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -79,13 +69,14 @@ public class MainMenu extends AppCompatActivity
     /**
      * Drawer menu functions
      */
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -116,14 +107,8 @@ public class MainMenu extends AppCompatActivity
         } else if (id == R.id.nav_shop) {
 
         } else if (id == R.id.nav_achievements) {
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    Intent intent = new Intent(getApplicationContext(), AcheivementsActivity.class);
+                    Intent intent = new Intent(MainMenu.this, AchievementsActivity.class);
                     startActivity(intent);
-                    return false;
-                }
-            });
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
