@@ -113,7 +113,7 @@ public class MainMenu extends AppCompatActivity
 
         } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_shop) {
+        } else if (id == R.id.nav_logout) {
 
         } else if (id == R.id.nav_achievements) {
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
