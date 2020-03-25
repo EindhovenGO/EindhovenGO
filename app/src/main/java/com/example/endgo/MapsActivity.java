@@ -8,7 +8,9 @@ import android.graphics.Color;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -16,13 +18,24 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class MapsActivity extends Activity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    // for now load test2
+    String currentObjective = "test2";
+    private Circle objectiveCircle;
+    DatabaseReference db = FirebaseDatabase.getInstance().getReference("Objectives");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +45,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        loadObjective();
     }
 
 
@@ -74,10 +88,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         cOptions.radius(radius);
         cOptions.fillColor(Color.argb(0.5f, 0f, 1f, 0f));
         cOptions.strokeWidth(0);
-        map.addCircle(cOptions);
+        objectiveCircle = map.addCircle(cOptions);
     }
 
-    public void focusUserLocation() throws SecurityException{
+    public void focusUserLocation() throws SecurityException {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         // enable button to focus camera on user location
@@ -97,10 +111,31 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
             // focus on user location when map screen opened and zoom
             mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-
-            // just show a circle right now, to show it works
-            addCircle(mMap, new LatLng(lat, lng), 3000);
         }
+    }
+
+    public void loadObjective() {
+        Query query = db.child(currentObjective);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (objectiveCircle != null) {
+                    objectiveCircle.remove();
+                }
+
+                //put the queried data into a LocationData object
+                ObjectiveData loc = dataSnapshot.getValue(ObjectiveData.class);
+
+                // we can create a circle using the given data
+                addCircle(mMap, new LatLng(loc.latitude, loc.longitude), 30000);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // TODO: maybe do something here
+                Log.d("testing", "error");
+            }
+        });
     }
 
 

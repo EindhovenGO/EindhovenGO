@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -20,16 +19,29 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    String username;
+    int points;
+    FirebaseAuth fAuth;
+    FirebaseUser fUser;
+    FirebaseDatabase fDatabase;
+    DatabaseReference fDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,16 +126,15 @@ public class MainMenu extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
-
+            //TODO prevent back button operation
+            FirebaseAuth.getInstance().signOut();
+            Intent i = new Intent(MainMenu.this, Login.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
         } else if (id == R.id.nav_achievements) {
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    Intent intent = new Intent(getApplicationContext(), AcheivementsActivity.class);
-                    startActivity(intent);
-                    return false;
-                }
-            });
+            Intent intent = new Intent(getApplicationContext(), AchievementsActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -138,5 +149,46 @@ public class MainMenu extends AppCompatActivity
     private void switchActivity(Activity a) {
         Intent i = new Intent(MainMenu.this, a.getClass() );
         startActivity(i);
+    }
+
+    /**
+     * Obtains user info. (Name, points and completed objective id's)
+     * Obtains current objectives.
+     * Checks what objectives are not completed.
+     * Filters out completed objectives.
+     */
+    private void getUserInfo() {
+        fAuth = FirebaseAuth.getInstance();
+        fUser = fAuth.getCurrentUser();
+        username = fUser.getDisplayName();
+        points = getPoints();
+
+        //Fetch current locations
+        List<Integer> currentLocations = new ArrayList<>(); //TODO fetch locations from DB
+
+        //Fetch completed locations
+        List<Integer> completedLocations = new ArrayList<>(); //TODO fetch locations from DB
+
+        //Filter locations
+        for ( int i = 0; i < completedLocations.size(); i++ ) {
+            for ( int j = 0; j < currentLocations.size(); j++ ) {
+                if ( completedLocations.get(i).equals( currentLocations.get(j) ) ) {
+                    currentLocations.remove(j);
+                    break; //break to save performance, assuming all locations are unique
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Fetch user points from DB
+     */
+    private int getPoints() {
+        if (true) {
+            return 1000;
+        }
+        //TODO Fetch user points from DB
+        return -1;
     }
 }

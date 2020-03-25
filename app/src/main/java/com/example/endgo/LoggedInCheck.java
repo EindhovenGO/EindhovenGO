@@ -10,7 +10,6 @@ public class LoggedInCheck extends Application {
     public void onCreate() {
         super.onCreate();
 
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (fUser != null) {

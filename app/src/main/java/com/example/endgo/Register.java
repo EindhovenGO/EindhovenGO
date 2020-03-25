@@ -131,7 +131,7 @@ public class Register extends AppCompatActivity {
                                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                                                         User user = new User(usr, e_mail,
-                                                                taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+                                                                taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(), 0);
                                                         FirebaseDatabase.getInstance().getReference("Users")
                                                                 .child(FirebaseAuth.getInstance().getCurrentUser().
                                                                         getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
