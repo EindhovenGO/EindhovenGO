@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".AdminPage"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -26,11 +26,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity android:name=".GSettingsActivity"></activity>
+
+        <activity android:name=".GSettingsActivity" />
         <activity android:name=".MainMenu" />
         <activity android:name=".Login">
             <intent-filter>
@@ -43,7 +43,7 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".MapsActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
