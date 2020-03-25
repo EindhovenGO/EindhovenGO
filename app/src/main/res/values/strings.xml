@@ -12,7 +12,7 @@
     <string name="gsettings_difficulty">Difficulty</string>
     <string name="gsettings_hints">Hints</string>
     <string name="gsettings_quit">Quit</string>
-    <string name="gsettings_buy">Buy</string>
+    <string name="gsettings_itemButton">Buy</string>
     <string name="gsettings_current_objective">Current Objective</string>
     <string name="gsettings_abandon_mission">Abandon Mission</string>
     <string name="gsettings_quitmission">Click here to quit your current mission.</string>

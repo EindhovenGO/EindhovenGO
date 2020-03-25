@@ -2,6 +2,7 @@ package com.example.endgo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.location.Location;
 import android.os.Bundle;
 
 import android.app.Activity;
@@ -21,20 +22,25 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
+import android.widget.ScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenu extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HintFragment.OnListFragmentInteractionListener  {
 
     String username;
     int points;
@@ -74,6 +80,14 @@ public class MainMenu extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        //ScrollView scrollView = findViewById(R.id.objective_list);
+        Fragment newFragment = new LocationFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Replace the view with the hintfragment
+        transaction.add(R.id.objective_contents, newFragment);
+        transaction.commit();
     }
 
     @Override
@@ -164,7 +178,10 @@ public class MainMenu extends AppCompatActivity
         points = getPoints();
 
         //Fetch current locations
+        /*
         List<Integer> currentLocations = new ArrayList<>(); //TODO fetch locations from DB
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Objectives");
+        db.orderByChild("name");
 
         //Fetch completed locations
         List<Integer> completedLocations = new ArrayList<>(); //TODO fetch locations from DB
@@ -178,7 +195,7 @@ public class MainMenu extends AppCompatActivity
                 }
             }
         }
-
+         */
     }
 
     /**
@@ -190,5 +207,10 @@ public class MainMenu extends AppCompatActivity
         }
         //TODO Fetch user points from DB
         return -1;
+    }
+
+    @Override
+    public void onListFragmentInteraction(HintList.HintItem item) {
+        (new GSettingsActivity() ).onListFragmentInteraction(item);
     }
 }
