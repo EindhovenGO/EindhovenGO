@@ -14,9 +14,11 @@
 
         <!-- This is the part that's 70% of the total width. I'm inserting a LinearLayout and buttons.-->
         <LinearLayout
+            android:id="@+id/poplayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:background="@color/white"
             android:orientation="vertical">
 
 
