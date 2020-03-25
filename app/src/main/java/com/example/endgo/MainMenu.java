@@ -87,22 +87,8 @@ public class MainMenu extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        //ScrollView scrollView = findViewById(R.id.objective_list);
-        Fragment newFragment = new LocationFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        // Replace the view with the hintfragment
-        transaction.add(R.id.objective_contents, newFragment);
-        transaction.commit();
-
         //Firebase get objectives
         fDB = FirebaseDatabase.getInstance().getReference("Objectives");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         fDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -114,9 +100,32 @@ public class MainMenu extends AppCompatActivity
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                ObjectiveList.clear();
             }
         });
+
+        /* Sets Buy button text to "Select"*/
+
+        //Wait 1 second before updating the Objective list
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Fragment newFragment = new LocationFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                // Replace the view with the hintfragment
+                transaction.add(R.id.objective_contents, newFragment);
+                transaction.commit();
+            }
+        }, 1000);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
     }
 
     @Override
