@@ -29,9 +29,9 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_shop"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Shop" />
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Logout" />
         </menu>
     </item>
 

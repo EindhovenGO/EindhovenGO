@@ -13,7 +13,7 @@
         android:layout_height="103dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:src="@drawable/profile_picture"
+        android:src="@mipmap/profile_picture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

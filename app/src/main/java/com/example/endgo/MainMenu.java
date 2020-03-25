@@ -113,7 +113,7 @@ public class MainMenu extends AppCompatActivity
 
         } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_shop) {
+        } else if (id == R.id.nav_logout) {
 
         } else if (id == R.id.nav_achievements) {
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -131,6 +131,10 @@ public class MainMenu extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Used to switch to another activity {@code a}
+     * @param a the activity to go to
+     */
     private void switchActivity(Activity a) {
         Intent i = new Intent(MainMenu.this, a.getClass() );
         startActivity(i);
