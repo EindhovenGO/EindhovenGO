@@ -12,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
+import android.text.Layout;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -35,6 +36,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.widget.ScrollView;
+import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +64,14 @@ public class MainMenu extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Game settings I guess", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, R.string.menu_toSettings, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        switchActivity(new GSettingsActivity() );
+                        Intent i = new Intent(MainMenu.this, GSettingsActivity.class);
+                        startActivity(i);
                     }
                 }, 500);
             }
@@ -134,11 +137,10 @@ public class MainMenu extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            // Handle the camera action
+            //to profile
+            Intent i = new Intent(MainMenu.this, UserProfile.class);
+            startActivity(i);
         } else if (id == R.id.nav_friends) {
-
-        } else if (id == R.id.nav_settings) {
-
         } else if (id == R.id.nav_logout) {
             //TODO prevent back button operation
             FirebaseAuth.getInstance().signOut();
@@ -154,15 +156,6 @@ public class MainMenu extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    /**
-     * Used to switch to another activity {@code a}
-     * @param a the activity to go to
-     */
-    private void switchActivity(Activity a) {
-        Intent i = new Intent(MainMenu.this, a.getClass() );
-        startActivity(i);
     }
 
     /**
