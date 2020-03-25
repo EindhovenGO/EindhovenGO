@@ -29,11 +29,9 @@
         android:hint="Password"
         android:inputType="textPersonName|textPassword"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <Button
         android:id="@+id/btnRegister"
@@ -67,7 +65,7 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
@@ -80,16 +78,18 @@
         android:id="@+id/profileImage"
         android:layout_width="112dp"
         android:layout_height="134dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/profile_picture" />
+        app:srcCompat="@mipmap/profile_picture" />
 
     <Button
         android:id="@+id/btnUpload"
         android:layout_width="135dp"
         android:layout_height="47dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/btn_shape"
         android:text="Choose Image"
         android:textColor="@color/white"

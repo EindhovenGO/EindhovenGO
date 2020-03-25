@@ -131,6 +131,10 @@ public class MainMenu extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Used to switch to another activity {@code a}
+     * @param a the activity to go to
+     */
     private void switchActivity(Activity a) {
         Intent i = new Intent(MainMenu.this, a.getClass() );
         startActivity(i);
