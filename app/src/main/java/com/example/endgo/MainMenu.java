@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,11 +26,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,11 +126,15 @@ public class MainMenu extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
-
+            //TODO prevent back button operation
+            FirebaseAuth.getInstance().signOut();
+            Intent i = new Intent(MainMenu.this, Login.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
         } else if (id == R.id.nav_achievements) {
-            Intent intent = new Intent(getApplicationContext(), AcheivementsActivity.class);
+            Intent intent = new Intent(getApplicationContext(), AchievementsActivity.class);
             startActivity(intent);
-            return true;
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
