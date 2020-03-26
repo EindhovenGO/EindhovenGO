@@ -9,13 +9,14 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="144dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="3dp"
+        android:layout_width="198dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="16dp"
         android:text="@string/app_name"
         android:textColor="@color/lightGreen"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/splashlogo"
         tools:ignore="MissingConstraints" />
@@ -23,8 +24,8 @@
     <ProgressBar
         android:id="@+id/progressBar2"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="160dp"
-        android:layout_height="23dp"
+        android:layout_width="202dp"
+        android:layout_height="43dp"
         android:indeterminate="true"
         android:indeterminateTint="@color/darkGreen"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,9 +37,9 @@
 
     <ImageView
         android:id="@+id/splashlogo"
-        android:layout_width="91dp"
-        android:layout_height="93dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="153dp"
+        android:layout_height="131dp"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
