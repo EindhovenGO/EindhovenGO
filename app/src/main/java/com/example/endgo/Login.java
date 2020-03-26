@@ -37,7 +37,7 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String e_mail =  email.getText().toString().trim();
+                final String e_mail =  email.getText().toString().trim();
                 String pwd = password.getText().toString().trim();
 
                 if (TextUtils.isEmpty(e_mail)) {
@@ -57,8 +57,12 @@ public class Login extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(Login.this, "Logged in",
                                     Toast.LENGTH_SHORT).show();
-                            //startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            startActivity(new Intent(getApplicationContext(), MainMenu.class));
+                            if (e_mail.equals("admin@admin.com")) {
+                                startActivity(new Intent(getApplicationContext(), AdminPage.class));
+                            } else {
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                //startActivity(new Intent(getApplicationContext(), MainMenu.class));
+                            }
                         } else {
                             Toast.makeText(Login.this, "Error" +
                                     task.getException().getMessage(), Toast.LENGTH_SHORT).show();

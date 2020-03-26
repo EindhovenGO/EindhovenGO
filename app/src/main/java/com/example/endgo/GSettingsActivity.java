@@ -80,35 +80,19 @@ public class GSettingsActivity extends AppCompatActivity implements HintFragment
 
     @Override
     public void onListFragmentInteraction(HintList.HintItem item) {
-        LayoutInflater layoutInflater = (LayoutInflater) GSettingsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        // we create a view that contains the hint content
-        View hintContent = layoutInflater.inflate(R.layout.popup,null);
-
         // we create a popupWindow that displays the hintContent view
-        PopupWindow popupWindow = new PopupWindow(hintContent, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+        DimPopup popupWindow = new DimPopup(this, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
         ConstraintLayout layout = findViewById(R.id.layout);
+        View hintContent = popupWindow.getContentView();
 
         TextView text = hintContent.findViewById(R.id.text_hint);
 
         //display the popup window
         popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
-        dimBehind(popupWindow);
+        popupWindow.dimBehind();
 
         // set the popupWindow text to the hint details
         text.setText(item.content);
-    }
-
-    // this function will dim the stuff outside of the popupwindow
-    private void dimBehind(PopupWindow popupWindow) {
-        View container = popupWindow.getContentView().getRootView();
-        Context context = popupWindow.getContentView().getContext();
-        WindowManager manager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams)container.getLayoutParams();
-
-        // we add the dim behind flag to dim the screen behind the popupWindow
-        params.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        params.dimAmount = 0.5f;
-        manager.updateViewLayout(container, params);
     }
 }

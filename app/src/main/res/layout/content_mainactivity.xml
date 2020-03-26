@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.eindhovengo.MainActivity"
+    tools:context="com.example.endgo.MainMenu"
     tools:showIn="@layout/app_bar_main">
 
     <TextView
@@ -32,6 +32,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/objective_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />

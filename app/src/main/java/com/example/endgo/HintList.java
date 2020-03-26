@@ -61,6 +61,22 @@ public class HintList {
             this.content = content;
         }
 
+        public HintItem(String name, int content) {
+            this.name = name;
+            String str;
+            switch(content) {
+                case 0:
+                    str = "Easy";
+                case 1:
+                    str = "Medium";
+                case 2:
+                    str = "Hard";
+                default:
+                    str = "Extreme";
+                this.content = str;
+            }
+        }
+
         @Override
         public String toString() {
             return content;
