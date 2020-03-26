@@ -69,7 +69,7 @@ public class LocationFragment extends HintFragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ItemRecyclerViewAdapter(objectivesToHints(ObjectiveList.ITEMS), (HintFragment.OnListFragmentInteractionListener) mListener));
+            recyclerView.setAdapter(new LocationRecyclerViewAdapter(objectivesToHints(ObjectiveList.ITEMS), mListener));
         }
         return view;
     }

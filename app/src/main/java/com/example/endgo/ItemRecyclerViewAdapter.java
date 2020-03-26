@@ -16,8 +16,8 @@ import java.util.List;
 
 public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<HintItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    protected final List<HintItem> mValues;
+    protected final OnListFragmentInteractionListener mListener;
 
     public ItemRecyclerViewAdapter(List<HintItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;

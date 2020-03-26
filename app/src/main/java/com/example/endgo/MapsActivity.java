@@ -50,7 +50,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     // for now load test2
-    private String currentObjectiveName = "test2";
+    private String currentObjectiveName;
     private ObjectiveData objective;
     private Circle objectiveCircle;
     private DatabaseReference db = FirebaseDatabase.getInstance().getReference("Objectives");
@@ -60,9 +60,16 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        // Objective name taken from Main menu
+        if (null != getIntent()) {
+            Intent incomingIntent = getIntent();
+            currentObjectiveName =  incomingIntent.getStringExtra("Name");
+        }
+
         // on creation we ask for permission, no use in creating the map if
         // we have no permission
         handlePermissions();
+
     }
 
     public void handlePermissions() {
