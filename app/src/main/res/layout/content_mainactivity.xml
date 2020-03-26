@@ -19,15 +19,16 @@
 
     <ScrollView
         android:id="@+id/objective_list"
-        android:layout_width="221dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="128dp"
-        android:layout_marginBottom="16dp"
 
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/background_grey"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

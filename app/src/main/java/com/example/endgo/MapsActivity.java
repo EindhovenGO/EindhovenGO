@@ -172,7 +172,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                 objectiveLocation.setLatitude(objective.latitude);
                 objectiveLocation.setLongitude(objective.longitude);
 
-                int radius = objective.difficulty * 500;
+                int radius;
+                if (objective.difficulty == 0) { radius = 1000; } else {
+                    radius = 500 / objective.difficulty;
+                }
                 // we can create a circle using the given data
                 addCircle(mMap, new LatLng(objective.latitude, objective.longitude), radius);
             }

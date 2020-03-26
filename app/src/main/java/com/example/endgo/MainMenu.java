@@ -241,7 +241,7 @@ public class MainMenu extends AppCompatActivity
     @Override
     public void onListFragmentInteraction(HintList.HintItem item) {
         // On clicking on a list fragment, the location should be sent WITH the intent
-        String objectiveName = item.name;
+        String objectiveName = item.content;
 
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
         intent.putExtra("Name", objectiveName);
