@@ -33,6 +33,8 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,18 +44,22 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MapsActivity extends Activity implements OnMapReadyCallback {
 
-    private FusedLocationProviderClient fusedLocationClient;
     // how close the user has to be to the objective in meters to win
-    private final int DISTANCE = 10;
-
-    private Location objectiveLocation;
+    private final int DISTANCE = 100;
 
     private GoogleMap mMap;
     // for now load test2
     private String currentObjectiveName;
     private ObjectiveData objective;
     private Circle objectiveCircle;
-    private DatabaseReference db = FirebaseDatabase.getInstance().getReference("Objectives");
+    private Location objectiveLocation;
+
+    private FusedLocationProviderClient fusedLocationClient;
+    private DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+    FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    FirebaseUser fUser =  fAuth.getCurrentUser();
+    LocationCallback callback;
+    int PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +75,6 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         // on creation we ask for permission, no use in creating the map if
         // we have no permission
         handlePermissions();
-
     }
 
     public void handlePermissions() {
@@ -80,14 +85,13 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         } else {
             // if not we ask for permission
             ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_CODE);
         }
     }
 
     public void initMap() {
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
 
         // ask for the location every 10 seconds
         LocationRequest request = LocationRequest.create();
@@ -98,7 +102,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         // the locationclient we will use to get the location of the user
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        LocationCallback callback = new LocationCallback() {
+        callback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
@@ -113,7 +117,25 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                     // if the user is closer than the treshold they win
                     double distance = location.distanceTo(objectiveLocation);
                     if (distance < DISTANCE) {
+                        // we create a popup saying that you won
                         createWinPopup();
+                        // query the database for the current user's points
+                        Query query = db.child("Users").child(fUser.getUid());
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                //put the queried data into a LocationData object
+                                int userPoints = dataSnapshot.child("points").getValue(int.class);
+                                userPoints += objective.difficulty * 100;
+                                dataSnapshot.getRef().child("points").setValue(userPoints);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                        // disable location updates, otherwise we would keep adding points to the user
+                        fusedLocationClient.removeLocationUpdates(callback);
                     }
                 }
             }
@@ -143,6 +165,8 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
         // hide most of the point of interest indicators
         mMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
+
+        mMap.setMyLocationEnabled(true);
     }
 
     // Will add a transparent green circle to the map at given coordinates
@@ -158,7 +182,8 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
 
     public void loadObjective() {
-        Query query = db.child(currentObjectiveName);
+        Query query = db.child("Objectives").child(currentObjectiveName);
+        // we add a valueeventlistener so we udate the circle on the map on a database change
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -182,8 +207,6 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // TODO: maybe do something here
-                Log.d("testing", "error");
             }
         });
     }
@@ -202,7 +225,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         popupWindow.dimBehind();
 
         // set the popupWindow text to the hint details
-        text.setText("You have found the location!");
+        text.setText("You have found the location!\n" + objective.difficulty * 100 + " points have been added to your account");
         Button button = new Button(this);
         button.setText("Back");
         button.setOnClickListener(new View.OnClickListener() {
@@ -232,9 +255,9 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
         // set the popupWindow text to the hint details
         text.setText("Please give us location access!");
-        Button button = new Button(this);
-        button.setText("Back");
-        button.setOnClickListener(new View.OnClickListener() {
+        Button backButton = new Button(this);
+        backButton.setText("Back");
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MapsActivity.this, MainMenu.class);
@@ -242,9 +265,9 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
             }
         });
 
-        Button button2 = new Button(this);
-        button2.setText("set permission");
-        button2.setOnClickListener(new View.OnClickListener() {
+        Button permissionButton = new Button(this);
+        permissionButton.setText("set permission");
+        permissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 handlePermissions();
@@ -253,8 +276,8 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         });
 
         LinearLayout popLayout = (LinearLayout)popupWindow.getContentView().findViewById(R.id.poplayout);
-        popLayout.addView(button);
-        popLayout.addView(button2);
+        popLayout.addView(backButton);
+        popLayout.addView(permissionButton);
     }
 
     @Override
