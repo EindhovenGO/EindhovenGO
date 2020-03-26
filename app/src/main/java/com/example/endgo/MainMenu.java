@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.app.Activity;
@@ -39,7 +40,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
@@ -82,6 +85,7 @@ public class MainMenu extends AppCompatActivity
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -125,6 +129,19 @@ public class MainMenu extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+
+        // Update drawer Username and points
+        getUserInfo();
+        View userview = getLayoutInflater().inflate(R.layout.drawer_header_user, null);
+
+        TextView user = userview.findViewById(R.id.drawer_username);
+        user.setText(username);
+
+        TextView userPoints = userview.findViewById(R.id.drawer_points);
+        userPoints.append(""+points);
+
+        ImageView userPfp = userview.findViewById(R.id.user_pfp);
+        userPfp.setImageURI(fUser.getPhotoUrl());
 
 
     }
@@ -175,6 +192,7 @@ public class MainMenu extends AppCompatActivity
         if (id == R.id.nav_profile) {
             //to profile
             Intent i = new Intent(MainMenu.this, UserProfile.class);
+            i.putExtra("points", points);
             startActivity(i);
         } else if (id == R.id.nav_friends) {
         } else if (id == R.id.nav_logout) {
@@ -204,38 +222,32 @@ public class MainMenu extends AppCompatActivity
         fAuth = FirebaseAuth.getInstance();
         fUser = fAuth.getCurrentUser();
         username = fUser.getDisplayName();
-        points = getPoints();
 
-        //Fetch current locations
-        /*
-        List<Integer> currentLocations = new ArrayList<>(); //TODO fetch locations from DB
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Objectives");
-        db.orderByChild("name");
-
-        //Fetch completed locations
-        List<Integer> completedLocations = new ArrayList<>(); //TODO fetch locations from DB
-
-        //Filter locations
-        for ( int i = 0; i < completedLocations.size(); i++ ) {
-            for ( int j = 0; j < currentLocations.size(); j++ ) {
-                if ( completedLocations.get(i).equals( currentLocations.get(j) ) ) {
-                    currentLocations.remove(j);
-                    break; //break to save performance, assuming all locations are unique
-                }
-            }
-        }
-         */
+        getPoints();
     }
 
     /**
      * Fetch user points from DB
      */
-    private int getPoints() {
-        if (true) {
-            return 1000;
-        }
-        //TODO Fetch user points from DB
-        return -1;
+    private void getPoints() {
+        points = 0;
+        FirebaseDatabase.getInstance().getReference(fUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int p;
+                if (dataSnapshot.child("points").getValue(Integer.class) == null) {
+                    p = 0;
+                } else {
+                    p = dataSnapshot.child("points").getValue(Integer.class);
+                }
+                points = p;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
     }
 
     @Override
