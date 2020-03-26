@@ -17,7 +17,7 @@
         android:text="Logout"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/white"
-        tools:layout_editor_absoluteX="221dp"
+        tools:layout_editor_absoluteX="203dp"
         tools:layout_editor_absoluteY="218dp" />
 
     <TextView
@@ -85,11 +85,13 @@
         android:id="@+id/pwdReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="484dp"
         android:ems="10"
         android:hint="New Password"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.734"
+        app:layout_constraintStart_toEndOf="@+id/profileEmail"
         tools:layout_editor_absoluteY="157dp" />
 
     <Button
@@ -103,8 +105,8 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.875"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.742"
+        app:layout_constraintStart_toEndOf="@+id/btnLogout"
         app:layout_constraintTop_toBottomOf="@+id/pwdReset"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -112,13 +114,15 @@
         android:id="@+id/oldPwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="484dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
         android:hint="Old Password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/pwdReset"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.732"
+        app:layout_constraintStart_toEndOf="@+id/profileName" />
 
     <Button
         android:id="@+id/btnGame"
