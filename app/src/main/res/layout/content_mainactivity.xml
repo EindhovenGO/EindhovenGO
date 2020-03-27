@@ -10,11 +10,13 @@
 
     <TextView
         android:id="@+id/welcomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="379dp"
+        android:layout_height="46dp"
         android:text="@string/main_maintext"
-        app:layout_constraintStart_toStartOf="@+id/objective_list"
+        android:textColor="@color/darkGreen"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
