@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,6 +33,8 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,11 +46,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MapsActivity extends Activity implements OnMapReadyCallback {
 
-    // how close the user has to be to the objective in meters to win
-    private final int DISTANCE = 100;
-
     private GoogleMap mMap;
-    // for now load test2
     private String currentObjectiveName;
     private ObjectiveData objective;
     private Circle objectiveCircle;
@@ -71,7 +69,6 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
             Intent incomingIntent = getIntent();
             currentObjectiveName =  incomingIntent.getStringExtra("Name");
         }
-
         // on creation we ask for permission, no use in creating the map if
         // we have no permission
         handlePermissions();
@@ -93,10 +90,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
 
-        // ask for the location every 10 seconds
+        // ask for the location every 2 seconds
         LocationRequest request = LocationRequest.create();
-        request.setInterval(10000);
-        request.setFastestInterval(5000);
+        request.setInterval(2000);
+        request.setFastestInterval(2000);
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         // the locationclient we will use to get the location of the user
@@ -116,7 +113,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                     // if we have a location we can compute how close the user is to the objective
                     // if the user is closer than the treshold they win
                     double distance = location.distanceTo(objectiveLocation);
-                    if (distance < DISTANCE) {
+                    if (distance <= objectiveCircle.getRadius()) {
                         // we create a popup saying that you won
                         createWinPopup();
                         // query the database for the current user's points
@@ -148,6 +145,21 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         // after all is initialized we can load the objective from the server
         mapFragment.getMapAsync(this);
         loadObjective();
+
+    }
+
+    public void focusUserLocation() throws SecurityException {
+        fusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                // when we have found the location we zoom in on it
+                if (task.isComplete()) {
+                    Location location = task.getResult();
+                    LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 10));
+                }
+            }
+        });
     }
 
     /**
@@ -166,7 +178,9 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         // hide most of the point of interest indicators
         mMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
 
+        // enable user location on the map and focus on it
         mMap.setMyLocationEnabled(true);
+        focusUserLocation();
     }
 
     // Will add a transparent green circle to the map at given coordinates
@@ -184,6 +198,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
     public void loadObjective() {
         Query query = db.child("Objectives").child(currentObjectiveName);
         // we add a valueeventlistener so we udate the circle on the map on a database change
+        // this means the user can see live changes of objective coordinates
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -254,9 +269,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         popupWindow.dimBehind();
 
         // set the popupWindow text to the hint details
-        text.setText("Please give us location access!");
+        text.setText("Please give us permission to use your location!");
         Button backButton = new Button(this);
         backButton.setText("Back");
+        // if back button pressed go back to main menu
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -267,6 +283,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
         Button permissionButton = new Button(this);
         permissionButton.setText("set permission");
+        // if permission button pressed ask for location permission
         permissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
