@@ -119,6 +119,10 @@ public class Register extends AppCompatActivity {
                    email.setError("Email is required");
                 } else if (TextUtils.isEmpty(usr)) {
                     username.setError("Username is required");
+                } else if (usr.length() < 6) {
+                    username.setError("Username must be at least 6 characters long");
+                } else if (usr.length() > 24) {
+                    username.setError("Username must be under 24 characters long");
                 } else if (TextUtils.isEmpty(pwd)) {
                     password.setError("Password is required");
                 } else if (pwd.length() < 6) {
