@@ -12,13 +12,26 @@
 
     <!-- Help Text-->
     <string name="helptext">
-        - Starting a game:\nTo start a new game select an objective from the list of objectives
-        with your desired location, number of points and difficulty and hit the Start button.\n
-        The difficulty of each objective can be viewed on the map depending on the size of the circle
-        surrounding it. The larger the circle the higher the difficulty\n\n
-        - Logging out:\nHad enough of EindhovenGo for now? Open up the main menu and under the Other
-        options you will find the Logout button.
-        -
+        - Starting a game:\nTo start a new game, select an objective from the list of objectives
+        with your desired location, number of points and difficulty and hit the Select button.
+        \n
+        \nThe difficulty of each objective can be viewed on the map depending on the size of the circle
+        surrounding it. The higher the difficulty, the closer to the objective you have to be.
+        \n\n\n
+        - Logging out:\nHad enough of EindhovenGo for now? Open up the main menu, pull out the drawer
+        and under the Other options you will find the Logout button.
+        \n\n\n
+        - About the app:\nThis app has been created as part of a Design Based Learning course on the Eindhoven University
+        of Technology, created by group 2019-Q3-2IS70-Group01, consisting of: \n
+        Danielle Gillam \n
+        Martijn van Andel \n
+        Joey Lensen \n
+        Andrei Roncea \n
+        Sergiu Drugă \n
+        Alexandru Matei \n
+        \n© 2020 TUe/Eindhoven University of Technology
+
+
     </string>
 
 
