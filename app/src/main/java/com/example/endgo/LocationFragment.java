@@ -95,7 +95,10 @@ public class LocationFragment extends HintFragment {
                     break;
                 default:
             }
-            hints.add(new HintList.HintItem(o.name + "\nDifficulty: " + diff, o.name));
+
+            //Points = difficulty * 100
+            String awardedPoints = "\nPoints rewarded: " + o.difficulty +"00";
+            hints.add(new HintList.HintItem(o.name + "\nDifficulty: " + diff + awardedPoints, o.name));
             // The second name is actually used to transfer to the MapsActivity. DO NOT CHANGE
         }
 

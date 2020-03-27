@@ -125,8 +125,7 @@ public class MainMenu extends AppCompatActivity
             }
         });
 
-        /* Sets Buy button text to "Select"*/
-
+        // TODO: loading drawable as placeholder
         //Wait 1 second before updating the Objective list
         new Handler().postDelayed(new Runnable() {
             @Override
