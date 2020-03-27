@@ -85,6 +85,22 @@ public class MainMenu extends AppCompatActivity
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        FloatingActionButton helpButton = findViewById(R.id.floatingHelpButton);
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, R.string.menu_toHelp, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(getApplicationContext(), AboutActivity.class);
+                        startActivity(i);
+                    }
+                }, 500);
+            }
+        });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -190,13 +206,12 @@ public class MainMenu extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            //to profile
+            // To Profile
             Intent i = new Intent(MainMenu.this, UserProfile.class);
             i.putExtra("points", points);
             startActivity(i);
-        } else if (id == R.id.nav_friends) {
         } else if (id == R.id.nav_logout) {
-            //TODO prevent back button operation
+            // Logout
             FirebaseAuth.getInstance().signOut();
             Intent i = new Intent(MainMenu.this, Login.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

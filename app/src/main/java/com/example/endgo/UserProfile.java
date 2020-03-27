@@ -60,9 +60,8 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-        } else if (id == R.id.nav_friends) {
         } else if (id == R.id.nav_logout) {
-            //TODO prevent back button operation
+
             FirebaseAuth.getInstance().signOut();
             Intent i = new Intent(UserProfile.this, Login.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -6,22 +6,13 @@
 
     <group android:checkableBehavior="single"
         tools:ignore="ExtraText">
-        <!-- TODO: change to fitting icons & not hardcoded titles' -->
+        <!-- TODO: change to fitting icons -->
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_menu_manage"
             android:title="Profile"
         />
-        <item
-            android:id="@+id/nav_friends"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Friends" />
-        <!--
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Settings" />
-            -->
+
         <item
             android:id="@+id/nav_achievements"
             android:icon="@android:drawable/btn_star_big_on"
