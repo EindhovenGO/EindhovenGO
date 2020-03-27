@@ -153,22 +153,25 @@ public class MainMenu extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        //TODO: HELP WITH THIS!!!!!
-        TextView user = findViewById(R.id.drawer_username);
-        //if (user == null) {} else {
-            user.setText(username);
-        //}
 
-        TextView userPoints = findViewById(R.id.drawer_points);
-        //if (userPoints == null) {} else {
+        View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
+
+        //TODO: HELP WITH THIS!!!!!
+        TextView user = header.findViewById(R.id.drawer_username);
+        if (user == null) {} else {
+            user.setText(username);
+        }
+
+        TextView userPoints = header.findViewById(R.id.drawer_points);
+        if (userPoints == null) {} else {
             String p = userPoints.getText() +"" + points;
             userPoints.setText(p);
-        //}
+        }
 
-        ImageView userPfp = findViewById(R.id.user_pfp);
-        //if (userPfp == null) {} else {
+        ImageView userPfp = header.findViewById(R.id.user_pfp);
+        if (userPfp == null) {} else {
             userPfp.setImageURI(fUser.getPhotoUrl());
-        //}
+        }
 
 
     }
