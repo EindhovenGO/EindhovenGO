@@ -134,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
                     pwdReset.setError("New password is empty");
                 } else if (newPwd.length() < 6) {
                     pwdReset.setError("Password must be at least 6 characters long");
+                } else if (newPwd.length() > 24) {
+                    pwdReset.setError("Password must be at most 24 characters long");
                 } else {
                     AuthCredential credential = EmailAuthProvider.getCredential(fUser.getEmail(), oldPwd);
                     fUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {

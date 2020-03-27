@@ -128,7 +128,7 @@ public class Register extends AppCompatActivity {
                 } else if (pwd.length() < 6) {
                     password.setError("Password must be at least 6 characters long");
                 } else if (pwd.length() > 24) {
-                    password.setError("Password must be under 24 characters long");
+                    password.setError("Password must be at most 24 characters long");
                 } else if (profileImage.getDrawable() == null) { //imgURI == null
                     Toast.makeText(Register.this, "No picture selected", Toast.LENGTH_SHORT).show();
                 } else {
