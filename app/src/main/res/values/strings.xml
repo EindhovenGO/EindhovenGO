@@ -65,8 +65,8 @@
     <string name="main_maintext">Welcome! Choose your next location to start</string>
 
     <!-- Strings for drawer navigation -->
-    <string name="username1">Username</string>
-    <string name="points">Points:</string>
+    <string name="username1">Username: \n</string>
+    <string name="points">Points: \n</string>
     <string-array name="achievements">
         <item>Take a picture</item>
         <item>Find an objective</item>

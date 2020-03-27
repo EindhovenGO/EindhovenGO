@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         fDB.child("Users").child(userKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //name = dataSnapshot.child("name").getValue().toString();
+                name = dataSnapshot.child("name").getValue().toString();
                 username.setText(name);
             }
 
@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(MainActivity.this, MainMenu.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.putExtra("username", name);
+                i.putExtra("email", email.getText());
                 startActivity(i);
             }
         });

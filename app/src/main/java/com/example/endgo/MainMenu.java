@@ -52,6 +52,7 @@ public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HintFragment.OnListFragmentInteractionListener  {
 
     String username;
+    String email;
     int points;
     FirebaseAuth fAuth;
     FirebaseUser fUser;
@@ -102,11 +103,19 @@ public class MainMenu extends AppCompatActivity
             }
         });
 
+        // Update drawer Username and points
+        getUserInfo();
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Update textview
+        TextView welcomeText = findViewById(R.id.welcomeText);
+        welcomeText.append("\nCurrently logged in as: " + username);
+        welcomeText.append("\nEmail: " + email );
 
         //Firebase get objectives
         fDB = FirebaseDatabase.getInstance().getReference("Objectives");
@@ -145,18 +154,24 @@ public class MainMenu extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-        // Update drawer Username and points
         getUserInfo();
+        // something goes wrong here
         View userview = getLayoutInflater().inflate(R.layout.drawer_header_user, null);
 
         TextView user = userview.findViewById(R.id.drawer_username);
-        user.setText(username);
+        if (user == null) {} else {
+            user.setText(username);
+        }
 
         TextView userPoints = userview.findViewById(R.id.drawer_points);
-        userPoints.append(""+points);
+        if (userPoints == null) {} else {
+            userPoints.append("" + points);
+        }
 
         ImageView userPfp = userview.findViewById(R.id.user_pfp);
-        userPfp.setImageURI(fUser.getPhotoUrl());
+        if (userPfp == null) {} else {
+            userPfp.setImageURI(fUser.getPhotoUrl());
+        }
 
 
     }
@@ -208,6 +223,8 @@ public class MainMenu extends AppCompatActivity
             // To Profile
             Intent i = new Intent(MainMenu.this, UserProfile.class);
             i.putExtra("points", points);
+            i.putExtra("username", username);
+            i.putExtra("email", email);
             startActivity(i);
         } else if (id == R.id.nav_logout) {
             // Logout
@@ -235,7 +252,15 @@ public class MainMenu extends AppCompatActivity
     private void getUserInfo() {
         fAuth = FirebaseAuth.getInstance();
         fUser = fAuth.getCurrentUser();
-        username = fUser.getDisplayName();
+
+        Intent i = getIntent();
+        if (i == null) {
+            username = fUser.getDisplayName();
+            email = fUser.getEmail();
+        } else {
+            username = i.getStringExtra("username");
+            email = i.getStringExtra("email");
+        }
 
         getPoints();
     }

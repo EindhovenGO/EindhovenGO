@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -18,8 +20,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class UserProfile extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    int points;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,23 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Update drawer Username and points
+        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        Intent i = getIntent();
+        points = i.getIntExtra("points", -1);
+        TextView user = findViewById(R.id.username);
+        assert fUser != null;
+        String userText = user.getText() + i.getStringExtra("username");
+        user.setText( userText );
+
+        TextView userPoints = findViewById(R.id.points);
+        //userPoints.append(""+points);
+        String p = userPoints.getText() +""+ points;
+        userPoints.setText( p );
+
+        ImageView userPfp = findViewById(R.id.profile_picture);
+        userPfp.setImageURI(fUser.getPhotoUrl());
+
     }
 
     @Override
@@ -72,7 +94,7 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
             startActivity(intent);
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_profile);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
