@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(MainActivity.this, MainMenu.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.putExtra("username", name);
+                i.putExtra("email", email.getText());
                 startActivity(i);
             }
         });
@@ -169,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
             profileImage.setImageURI(imgURI);
         }
     }
+
 
 
 

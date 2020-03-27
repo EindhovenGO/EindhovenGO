@@ -12,8 +12,8 @@ public class LoggedInCheck extends Application {
 
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (fUser != null) {
-        //    startActivity(new Intent(LoggedInCheck.this, MainActivity.class));
+        if (fUser != null && !fUser.getEmail().equals("admin@admin.com")) {
+            //startActivity(new Intent(LoggedInCheck.this, MainActivity.class));
         }
     }
 }

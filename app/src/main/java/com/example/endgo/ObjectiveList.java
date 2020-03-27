@@ -11,15 +11,6 @@ import java.util.List;
 class ObjectiveList<db> {
     public static List<ObjectiveData> ITEMS = new ArrayList<>();
 
-    static{
-        /*
-        int i = 0;
-        while(i < 5) {
-            ITEMS.add(new ObjectiveData("Objective "+ (i + 1), 0));
-            i++;
-        }*/
-    }
-
     public static void write(ObjectiveData o) {
         ITEMS.add( o );
     }

@@ -103,4 +103,5 @@
     <string name="diff_three">Hard</string>
     <string name="diff_morethanthree">Extremely hard</string>
     <string name="menu_toHelp">Help requested</string>
+    <string name="emailaddress">"Email: "</string>
 </resources>

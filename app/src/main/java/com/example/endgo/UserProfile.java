@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -18,8 +20,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class UserProfile extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    int points;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
         Toolbar toolbar = findViewById(R.id.toolbar);
         // setSupportActionBar(toolbar);
 
+        /*
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +50,8 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
                 }, 500);
             }
         });
+
+         */
         DrawerLayout drawer = findViewById(R.id.drawer_layout_profile);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,6 +59,27 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Update drawer Username and points
+        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        Intent i = getIntent();
+        points = i.getIntExtra("points", -1);
+        TextView user = findViewById(R.id.username);
+        assert fUser != null;
+        String userText = user.getText() + i.getStringExtra("username");
+        user.setText( userText );
+
+        TextView userPoints = findViewById(R.id.points);
+        //userPoints.append(""+points);
+        String p = userPoints.getText() +""+ points;
+        userPoints.setText( p );
+
+        TextView email = findViewById(R.id.profile_email);
+        String e = email.getText() + "" + i.getStringExtra("email");
+        email.setText(e);
+
+        ImageView userPfp = findViewById(R.id.profile_picture);
+        userPfp.setImageURI(fUser.getPhotoUrl());
 
     }
 
@@ -60,9 +89,9 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-        } else if (id == R.id.nav_friends) {
+            super.onBackPressed();
         } else if (id == R.id.nav_logout) {
-            //TODO prevent back button operation
+
             FirebaseAuth.getInstance().signOut();
             Intent i = new Intent(UserProfile.this, Login.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -73,8 +102,20 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
             startActivity(intent);
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_profile);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        /**Drawer menu*/
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_profile);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

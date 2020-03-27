@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.app.Activity;
@@ -39,7 +40,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
@@ -49,6 +52,7 @@ public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HintFragment.OnListFragmentInteractionListener  {
 
     String username;
+    String email;
     int points;
     FirebaseAuth fAuth;
     FirebaseUser fUser;
@@ -82,11 +86,36 @@ public class MainMenu extends AppCompatActivity
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        FloatingActionButton helpButton = findViewById(R.id.floatingHelpButton);
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, R.string.menu_toHelp, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(getApplicationContext(), AboutActivity.class);
+                        startActivity(i);
+                    }
+                }, 500);
+            }
+        });
+
+        // Update drawer Username and points
+        getUserInfo();
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Update textview
+        TextView welcomeText = findViewById(R.id.welcomeText);
+        welcomeText.append("\nCurrently logged in as: " + username);
+        welcomeText.append("\nEmail: " + email );
 
         //Firebase get objectives
         fDB = FirebaseDatabase.getInstance().getReference("Objectives");
@@ -105,8 +134,7 @@ public class MainMenu extends AppCompatActivity
             }
         });
 
-        /* Sets Buy button text to "Select"*/
-
+        // TODO: loading drawable as placeholder
         //Wait 1 second before updating the Objective list
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -118,13 +146,25 @@ public class MainMenu extends AppCompatActivity
                 transaction.add(R.id.objective_contents, newFragment);
                 transaction.commit();
             }
-        }, 1000);
+        }, 3000); //Delay before locations load
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
+
+        TextView user = header.findViewById(R.id.drawer_username);
+        if (user == null) {} else {
+            user.setText(username);
+        }
+
+        ImageView userPfp = header.findViewById(R.id.user_pfp);
+        if (userPfp == null) {} else {
+            userPfp.setImageURI(fUser.getPhotoUrl());
+        }
 
 
     }
@@ -148,6 +188,7 @@ public class MainMenu extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -173,12 +214,14 @@ public class MainMenu extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            //to profile
+            // To Profile
             Intent i = new Intent(MainMenu.this, UserProfile.class);
+            i.putExtra("points", points);
+            i.putExtra("username", username);
+            i.putExtra("email", email);
             startActivity(i);
-        } else if (id == R.id.nav_friends) {
         } else if (id == R.id.nav_logout) {
-            //TODO prevent back button operation
+            // Logout
             FirebaseAuth.getInstance().signOut();
             Intent i = new Intent(MainMenu.this, Login.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -203,43 +246,58 @@ public class MainMenu extends AppCompatActivity
     private void getUserInfo() {
         fAuth = FirebaseAuth.getInstance();
         fUser = fAuth.getCurrentUser();
-        username = fUser.getDisplayName();
-        points = getPoints();
 
-        //Fetch current locations
-        /*
-        List<Integer> currentLocations = new ArrayList<>(); //TODO fetch locations from DB
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Objectives");
-        db.orderByChild("name");
-
-        //Fetch completed locations
-        List<Integer> completedLocations = new ArrayList<>(); //TODO fetch locations from DB
-
-        //Filter locations
-        for ( int i = 0; i < completedLocations.size(); i++ ) {
-            for ( int j = 0; j < currentLocations.size(); j++ ) {
-                if ( completedLocations.get(i).equals( currentLocations.get(j) ) ) {
-                    currentLocations.remove(j);
-                    break; //break to save performance, assuming all locations are unique
-                }
-            }
+        Intent i = getIntent();
+        if (i == null) {
+            username = fUser.getDisplayName();
+            email = fUser.getEmail();
+        } else {
+            username = i.getStringExtra("username");
+            email = i.getStringExtra("email");
         }
-         */
+
+        getPoints();
     }
 
     /**
      * Fetch user points from DB
      */
-    private int getPoints() {
-        if (true) {
-            return 1000;
-        }
-        //TODO Fetch user points from DB
-        return -1;
+    private void getPoints() {
+        points = -1;
+        FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int p;
+                if (dataSnapshot.child("points").getValue(Integer.class) == null) {
+                    p = 0;
+                } else {
+                    p = dataSnapshot.child("points").getValue(Integer.class);
+
+                    // Update drawer info
+                    View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
+                    TextView userPoints = header.findViewById(R.id.drawer_points);
+                    if (userPoints == null) {} else {
+                        String pointz = userPoints.getText() +"" + p;
+                        userPoints.setText(pointz);
+                    }
+                }
+                points = p;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
     }
 
     @Override
     public void onListFragmentInteraction(HintList.HintItem item) {
-        (new GSettingsActivity() ).onListFragmentInteraction(item);
+        // On clicking on a list fragment, the location should be sent WITH the intent
+        String objectiveName = item.content;
+
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        intent.putExtra("Name", objectiveName);
+        startActivity(intent);
     }
 }

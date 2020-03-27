@@ -69,7 +69,7 @@ public class LocationFragment extends HintFragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ItemRecyclerViewAdapter(objectivesToHints(ObjectiveList.ITEMS), (HintFragment.OnListFragmentInteractionListener) mListener));
+            recyclerView.setAdapter(new LocationRecyclerViewAdapter(objectivesToHints(ObjectiveList.ITEMS), mListener));
         }
         return view;
     }
@@ -77,7 +77,29 @@ public class LocationFragment extends HintFragment {
     private List<HintList.HintItem> objectivesToHints(List<ObjectiveData> items) {
         List<HintList.HintItem> hints = new ArrayList<>();
         for (ObjectiveData o: items ) {
-            hints.add(new HintList.HintItem(o.name, o.difficulty));
+
+            // Convert difficulty integer to String entries
+            String diff = getString(R.string.diff_morethanthree);
+            switch(o.difficulty) {
+                case 0:
+                    diff = getString(R.string.diff_zero);
+                    break;
+                case 1:
+                    diff = getString(R.string.diff_one);
+                    break;
+                case 2:
+                    diff = getString(R.string.diff_two);
+                    break;
+                case 3:
+                    diff = getString(R.string.diff_three);
+                    break;
+                default:
+            }
+
+            //Points = difficulty * 100
+            String awardedPoints = "\nPoints rewarded: " + o.difficulty +"00";
+            hints.add(new HintList.HintItem(o.name + "\nDifficulty: " + diff + awardedPoints, o.name));
+            // The second name is actually used to transfer to the MapsActivity. DO NOT CHANGE
         }
 
         return hints;
