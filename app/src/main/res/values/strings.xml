@@ -9,7 +9,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="exit">X</string>
     <string name="needhelp">Need help?</string>
-    <string name="notAMember"><u>Not a part of the explorer's guild? Sign up!</u></string>
+    <string name="notAMember"><u>Not a part of the explorer\'s guild? Sign up!</u></string>
     <string name="alreadyAdventurer"><u>Already an adventurer? Log-in here!</u></string>
 
     <!-- Help Text-->
