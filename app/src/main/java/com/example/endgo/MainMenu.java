@@ -146,7 +146,7 @@ public class MainMenu extends AppCompatActivity
                 transaction.add(R.id.objective_contents, newFragment);
                 transaction.commit();
             }
-        }, 1000);
+        }, 3000); //Delay before locations load
 
     }
 

@@ -33,6 +33,7 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
         Toolbar toolbar = findViewById(R.id.toolbar);
         // setSupportActionBar(toolbar);
 
+        /*
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +50,8 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
                 }, 500);
             }
         });
+
+         */
         DrawerLayout drawer = findViewById(R.id.drawer_layout_profile);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -71,6 +74,10 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
         String p = userPoints.getText() +""+ points;
         userPoints.setText( p );
 
+        TextView email = findViewById(R.id.profile_email);
+        String e = email.getText() + "" + i.getStringExtra("email");
+        email.setText(e);
+
         ImageView userPfp = findViewById(R.id.profile_picture);
         userPfp.setImageURI(fUser.getPhotoUrl());
 
@@ -82,6 +89,7 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
+            super.onBackPressed();
         } else if (id == R.id.nav_logout) {
 
             FirebaseAuth.getInstance().signOut();
@@ -97,5 +105,17 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
         DrawerLayout drawer = findViewById(R.id.drawer_layout_profile);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        /**Drawer menu*/
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_profile);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
