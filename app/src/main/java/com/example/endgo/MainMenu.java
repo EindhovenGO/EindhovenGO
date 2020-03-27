@@ -156,16 +156,9 @@ public class MainMenu extends AppCompatActivity
 
         View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
 
-        //TODO: HELP WITH THIS!!!!!
         TextView user = header.findViewById(R.id.drawer_username);
         if (user == null) {} else {
             user.setText(username);
-        }
-
-        TextView userPoints = header.findViewById(R.id.drawer_points);
-        if (userPoints == null) {} else {
-            String p = userPoints.getText() +"" + points;
-            userPoints.setText(p);
         }
 
         ImageView userPfp = header.findViewById(R.id.user_pfp);
@@ -195,6 +188,7 @@ public class MainMenu extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -269,8 +263,8 @@ public class MainMenu extends AppCompatActivity
      * Fetch user points from DB
      */
     private void getPoints() {
-        points = 0;
-        FirebaseDatabase.getInstance().getReference(fUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        points = -1;
+        FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int p;
@@ -278,6 +272,14 @@ public class MainMenu extends AppCompatActivity
                     p = 0;
                 } else {
                     p = dataSnapshot.child("points").getValue(Integer.class);
+
+                    // Update drawer info
+                    View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
+                    TextView userPoints = header.findViewById(R.id.drawer_points);
+                    if (userPoints == null) {} else {
+                        String pointz = userPoints.getText() +"" + p;
+                        userPoints.setText(pointz);
+                    }
                 }
                 points = p;
             }

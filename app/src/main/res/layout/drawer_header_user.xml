@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/drawer_username"
-        android:layout_width="119dp"
+        android:layout_width="0dp"
         android:layout_height="42dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="52dp"
@@ -35,12 +35,17 @@
         android:text="@string/nav_header_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="24sp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="6sp"
+        android:autoSizeMaxTextSize="24sp"
+        android:autoSizeStepGranularity="4sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/user_pfp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/drawer_points"
-        android:layout_width="118dp"
+        android:layout_width="wrap_content"
         android:layout_height="22dp"
         android:layout_marginStart="16dp"
         android:text="@string/nav_header_subtitle"
