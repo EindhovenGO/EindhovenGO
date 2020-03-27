@@ -2,38 +2,153 @@ package com.example.endgo;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Criteria;
-import android.location.LocationManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class MapsActivity extends Activity implements OnMapReadyCallback {
 
+    // how close the user has to be to the objective in meters to win
+    private final int DISTANCE = 100;
+
     private GoogleMap mMap;
+    // for now load test2
+    private String currentObjectiveName;
+    private ObjectiveData objective;
+    private Circle objectiveCircle;
+    private Location objectiveLocation;
+
+    private FusedLocationProviderClient fusedLocationClient;
+    private DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+    FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    FirebaseUser fUser =  fAuth.getCurrentUser();
+    LocationCallback callback;
+    int PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        // Objective name taken from Main menu
+        if (null != getIntent()) {
+            Intent incomingIntent = getIntent();
+            currentObjectiveName =  incomingIntent.getStringExtra("Name");
+        }
+
+        // on creation we ask for permission, no use in creating the map if
+        // we have no permission
+        handlePermissions();
     }
 
+    public void handlePermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            // if permission we can move on
+            initMap();
+        } else {
+            // if not we ask for permission
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_CODE);
+        }
+    }
+
+    public void initMap() {
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+
+        // ask for the location every 10 seconds
+        LocationRequest request = LocationRequest.create();
+        request.setInterval(10000);
+        request.setFastestInterval(5000);
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        // the locationclient we will use to get the location of the user
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        callback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    // if no objectiveLocation just do nothing
+                    if (objectiveLocation == null) {
+                        return;
+                    }
+                    // if we have a location we can compute how close the user is to the objective
+                    // if the user is closer than the treshold they win
+                    double distance = location.distanceTo(objectiveLocation);
+                    if (distance < DISTANCE) {
+                        // we create a popup saying that you won
+                        createWinPopup();
+                        // query the database for the current user's points
+                        Query query = db.child("Users").child(fUser.getUid());
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                //put the queried data into a LocationData object
+                                int userPoints = dataSnapshot.child("points").getValue(int.class);
+                                userPoints += objective.difficulty * 100;
+                                dataSnapshot.getRef().child("points").setValue(userPoints);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                        // disable location updates, otherwise we would keep adding points to the user
+                        fusedLocationClient.removeLocationUpdates(callback);
+                    }
+                }
+            }
+        };
+
+        fusedLocationClient.requestLocationUpdates(request,
+                callback,
+                Looper.getMainLooper());
+
+        // after all is initialized we can load the objective from the server
+        mapFragment.getMapAsync(this);
+        loadObjective();
+    }
 
     /**
      * Manipulates the map once available.
@@ -51,19 +166,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         // hide most of the point of interest indicators
         mMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
 
-        // Check if we have permission to use user location
-        // otherwise ask for it
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            if (mMap != null) {
-                focusUserLocation();
-            }
-        } else {
-            // TODO: fix the case where user denies app permissions again
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            focusUserLocation();
-        }
+        mMap.setMyLocationEnabled(true);
     }
 
     // Will add a transparent green circle to the map at given coordinates
@@ -74,34 +177,122 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         cOptions.radius(radius);
         cOptions.fillColor(Color.argb(0.5f, 0f, 1f, 0f));
         cOptions.strokeWidth(0);
-        map.addCircle(cOptions);
+        objectiveCircle = map.addCircle(cOptions);
     }
 
-    public void focusUserLocation() throws SecurityException{
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        // enable button to focus camera on user location
-        mMap.setMyLocationEnabled(true);
+    public void loadObjective() {
+        Query query = db.child("Objectives").child(currentObjectiveName);
+        // we add a valueeventlistener so we udate the circle on the map on a database change
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (objectiveCircle != null) {
+                    objectiveCircle.remove();
+                }
 
-        // we ask for the best provider using a default criteria
-        String provider = locationManager.getBestProvider(new Criteria(), true);
+                //put the queried data into a LocationData object
+                objective = dataSnapshot.getValue(ObjectiveData.class);
+                objectiveLocation = new Location("");
+                objectiveLocation.setLatitude(objective.latitude);
+                objectiveLocation.setLongitude(objective.longitude);
 
-        // when we can ge the location we focus on it, otherwise we don't do
-        // anything
-        if (provider != null) {
-            double lat = locationManager.getLastKnownLocation(provider).getLatitude();
-            double lng = locationManager.getLastKnownLocation(provider).getLongitude();
-            LatLng location = new LatLng(lat, lng);
+                int radius;
+                if (objective.difficulty == 0) { radius = 1000; } else {
+                    radius = 500 / objective.difficulty;
+                }
+                // we can create a circle using the given data
+                addCircle(mMap, new LatLng(objective.latitude, objective.longitude), radius);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
 
-            // focus on user location when map screen opened and zoom
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+    public void createWinPopup() {
+        // we create a popupWindow that displays the hintContent view
+        DimPopup popupWindow = new DimPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, false);
+        ConstraintLayout layout = findViewById(R.id.mapslayout);
+        View hintContent = popupWindow.getContentView();
 
-            // just show a circle right now, to show it works
-            addCircle(mMap, new LatLng(lat, lng), 3000);
+        TextView text = hintContent.findViewById(R.id.text_hint);
+
+        //display the popup window
+        popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+        popupWindow.dimBehind();
+
+        // set the popupWindow text to the hint details
+        text.setText("You have found the location!\n" + objective.difficulty * 100 + " points have been added to your account");
+        Button button = new Button(this);
+        button.setText("Back");
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, MainMenu.class);
+                startActivity(intent);
+            }
+        });
+
+        LinearLayout popLayout = (LinearLayout)popupWindow.getContentView().findViewById(R.id.poplayout);
+        popLayout.addView(button);
+    }
+
+    public void createAlertPopup() {
+        // we create a popupWindow that displays the hintContent view
+        final DimPopup popupWindow = new DimPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, false);
+        ConstraintLayout layout = findViewById(R.id.mapslayout);
+        View hintContent = popupWindow.getContentView();
+
+        TextView text = hintContent.findViewById(R.id.text_hint);
+
+        //display the popup window
+        popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+        popupWindow.dimBehind();
+
+        // set the popupWindow text to the hint details
+        text.setText("Please give us location access!");
+        Button backButton = new Button(this);
+        backButton.setText("Back");
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, MainMenu.class);
+                startActivity(intent);
+            }
+        });
+
+        Button permissionButton = new Button(this);
+        permissionButton.setText("set permission");
+        permissionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handlePermissions();
+                popupWindow.dismiss();
+            }
+        });
+
+        LinearLayout popLayout = (LinearLayout)popupWindow.getContentView().findViewById(R.id.poplayout);
+        popLayout.addView(backButton);
+        popLayout.addView(permissionButton);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        // if the requestcode is right we have permission
+        if (requestCode == 1) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initMap();
+            } else {
+                // otherwise create alert to ask user again for permission
+                createAlertPopup();
+            }
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-
 }

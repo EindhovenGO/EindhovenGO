@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EndGo</string>
+    <string name="app_name">EindhovenGo</string>
     <string name="login">Login</string>
     <string name="signup">Sign Up</string>
     <string name="help">\?</string>
@@ -7,12 +7,26 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="exit">X</string>
+    <string name="needhelp">Need help?</string>
+
+    <!-- Help Text-->
+    <string name="helptext">
+        - Starting a game:\nTo start a new game select an objective from the list of objectives
+        with your desired location, number of points and difficulty and hit the Start button.\n
+        The difficulty of each objective can be viewed on the map depending on the size of the circle
+        surrounding it. The larger the circle the higher the difficulty\n\n
+        - Logging out:\nHad enough of EindhovenGo for now? Open up the main menu and under the Other
+        options you will find the Logout button.
+        -
+    </string>
+
 
     <!-- Strings for the gsettings activity -->
     <string name="gsettings_difficulty">Difficulty</string>
     <string name="gsettings_hints">Hints</string>
     <string name="gsettings_quit">Quit</string>
-    <string name="gsettings_buy">Buy</string>
+    <string name="gsettings_itemButton">Buy</string>
     <string name="gsettings_current_objective">Current Objective</string>
     <string name="gsettings_abandon_mission">Abandon Mission</string>
     <string name="gsettings_quitmission">Click here to quit your current mission.</string>
@@ -66,4 +80,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_toSettings">Loading game settings</string>
+    <string name="gsettings_itemButtonLocation">Select</string>
+    <string name="diff_zero">Too easy</string>
+    <string name="diff_one">Easy</string>
+    <string name="diff_two">Medium</string>
+    <string name="diff_three">Hard</string>
+    <string name="diff_morethanthree">Extremely hard</string>
 </resources>

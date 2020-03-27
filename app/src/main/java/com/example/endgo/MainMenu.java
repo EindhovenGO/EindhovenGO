@@ -1,17 +1,20 @@
 package com.example.endgo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.location.Location;
 import android.os.Bundle;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
+import android.text.Layout;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -20,16 +23,37 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
+import android.widget.ScrollView;
+import android.widget.ViewFlipper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainMenu extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HintFragment.OnListFragmentInteractionListener  {
+
+    String username;
+    int points;
+    FirebaseAuth fAuth;
+    FirebaseUser fUser;
+    FirebaseDatabase fDatabase;
+    DatabaseReference fDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +68,14 @@ public class MainMenu extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Game settings I guess", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, R.string.menu_toSettings, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        switchActivity(new GSettingsActivity() );
+                        Intent i = new Intent(MainMenu.this, GSettingsActivity.class);
+                        startActivity(i);
                     }
                 }, 500);
             }
@@ -62,6 +87,46 @@ public class MainMenu extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Firebase get objectives
+        fDB = FirebaseDatabase.getInstance().getReference("Objectives");
+        fDB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ObjectiveList.clear();
+                for ( DataSnapshot obj : dataSnapshot.getChildren() ) {
+                    ObjectiveList.write( obj.getValue(ObjectiveData.class) );
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                ObjectiveList.clear();
+            }
+        });
+
+        /* Sets Buy button text to "Select"*/
+
+        //Wait 1 second before updating the Objective list
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Fragment newFragment = new LocationFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                // Replace the view with the hintfragment
+                transaction.add(R.id.objective_contents, newFragment);
+                transaction.commit();
+            }
+        }, 1000);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
     }
 
     @Override
@@ -108,22 +173,20 @@ public class MainMenu extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            // Handle the camera action
+            //to profile
+            Intent i = new Intent(MainMenu.this, UserProfile.class);
+            startActivity(i);
         } else if (id == R.id.nav_friends) {
-
-        } else if (id == R.id.nav_settings) {
-
         } else if (id == R.id.nav_logout) {
-
+            //TODO prevent back button operation
+            FirebaseAuth.getInstance().signOut();
+            Intent i = new Intent(MainMenu.this, Login.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
         } else if (id == R.id.nav_achievements) {
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    Intent intent = new Intent(getApplicationContext(), AcheivementsActivity.class);
-                    startActivity(intent);
-                    return false;
-                }
-            });
+            Intent intent = new Intent(getApplicationContext(), AchievementsActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -132,11 +195,56 @@ public class MainMenu extends AppCompatActivity
     }
 
     /**
-     * Used to switch to another activity {@code a}
-     * @param a the activity to go to
+     * Obtains user info. (Name, points and completed objective id's)
+     * Obtains current objectives.
+     * Checks what objectives are not completed.
+     * Filters out completed objectives.
      */
-    private void switchActivity(Activity a) {
-        Intent i = new Intent(MainMenu.this, a.getClass() );
-        startActivity(i);
+    private void getUserInfo() {
+        fAuth = FirebaseAuth.getInstance();
+        fUser = fAuth.getCurrentUser();
+        username = fUser.getDisplayName();
+        points = getPoints();
+
+        //Fetch current locations
+        /*
+        List<Integer> currentLocations = new ArrayList<>(); //TODO fetch locations from DB
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Objectives");
+        db.orderByChild("name");
+
+        //Fetch completed locations
+        List<Integer> completedLocations = new ArrayList<>(); //TODO fetch locations from DB
+
+        //Filter locations
+        for ( int i = 0; i < completedLocations.size(); i++ ) {
+            for ( int j = 0; j < currentLocations.size(); j++ ) {
+                if ( completedLocations.get(i).equals( currentLocations.get(j) ) ) {
+                    currentLocations.remove(j);
+                    break; //break to save performance, assuming all locations are unique
+                }
+            }
+        }
+         */
+    }
+
+    /**
+     * Fetch user points from DB
+     */
+    private int getPoints() {
+        if (true) {
+            return 1000;
+        }
+        //TODO Fetch user points from DB
+        return -1;
+    }
+
+    @Override
+    public void onListFragmentInteraction(HintList.HintItem item) {
+        // On clicking on a list fragment, the location should be sent WITH the intent
+        String objectiveName = item.content;
+
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        intent.putExtra("Name", objectiveName);
+        startActivity(intent);
     }
 }
