@@ -114,7 +114,7 @@ public class MainMenu extends AppCompatActivity
 
         // Update textview
         TextView welcomeText = findViewById(R.id.welcomeText);
-        welcomeText.append(username + getString(R.string.main_maintext2) );
+        welcomeText.append(" " + username + getString(R.string.main_maintext2) );
 
         //Firebase get objectives
         fDB = FirebaseDatabase.getInstance().getReference("Objectives");
