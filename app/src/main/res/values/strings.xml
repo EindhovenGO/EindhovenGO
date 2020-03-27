@@ -9,7 +9,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="exit">X</string>
     <string name="needhelp">Need help?</string>
-    <string name="notAMember"><u>Not a part of the explorer's guild? Sign up!</u></string>
+    <string name="notAMember"><u>Not a part of the explorer\'s guild? Sign up!</u></string>
     <string name="alreadyAdventurer"><u>Already an adventurer? Log-in here!</u></string>
 
     <!-- Help Text-->
@@ -64,7 +64,7 @@
     <string name="menu_send">Send</string>
     <string name="title_activity_maps">Map</string>
 
-    <string name="main_maintext">Welcome to EindhovenGo! Choose your next location to start.</string>
+    <string name="main_maintext">Welcome </string>
     <string name="main_maintext2">! \nChoose your next location to start.</string>
 
     <!-- Strings for drawer navigation -->

@@ -52,10 +52,10 @@ public class AdminPage extends AppCompatActivity {
         fDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                locationName = dataSnapshot.child("test2").child("name").getValue().toString();
+                locationName = dataSnapshot.child("test2").child("name").getValue().toString().trim();
                 location1.setText(locationName);
 
-                descriptionName = dataSnapshot.child("test2").child("description").getValue().toString();
+                descriptionName = dataSnapshot.child("test2").child("description").getValue().toString().trim();
                 description1.setText(descriptionName);
             }
 
