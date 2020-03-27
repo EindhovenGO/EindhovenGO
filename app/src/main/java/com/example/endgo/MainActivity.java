@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         fDB.child("Users").child(userKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                name = dataSnapshot.child("name").getValue().toString();
+                //name = dataSnapshot.child("name").getValue().toString();
                 username.setText(name);
             }
 
@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
             profileImage.setImageURI(imgURI);
         }
     }
+
 
 
 
