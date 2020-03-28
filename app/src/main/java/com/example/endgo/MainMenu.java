@@ -227,7 +227,7 @@ public class MainMenu extends AppCompatActivity
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
         } else if (id == R.id.nav_achievements) {
-            Intent intent = new Intent(getApplicationContext(), AchievementsActivity.class);
+            Intent intent = new Intent(MainMenu.this, AchievementsActivity.class);
             startActivity(intent);
         }
 

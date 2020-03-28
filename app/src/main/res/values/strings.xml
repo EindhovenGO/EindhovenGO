@@ -70,28 +70,27 @@
     <!-- Strings for drawer navigation -->
     <string name="username1">Username: \n</string>
     <string name="points">Points: \n</string>
+
+
     <string-array name="achievements">
-        <item>Take a picture</item>
-        <item>Find an objective</item>
-        <item>Find 5 objectives</item>
-        <item>Idk</item>
-        <item>Go get them boi</item>
+        <item>The Engineer</item>
+        <item>Get started</item>
+        <item>To the moon and back</item>
+        <item>The traveller</item>
     </string-array>
 
     <string-array name="points">
-        <item>1 point</item>
-        <item>5 points</item>
-        <item>2 points</item>
-        <item>3 points</item>
-        <item>10 points</item>
+        <item>500 points</item>
+        <item>100 points</item>
+        <item>600 points</item>
+        <item>1000 points</item>
     </string-array>
 
-    <string-array name="descriptions">
-        <item>Take a picture of an objective</item>
-        <item>Find an objective on the map</item>
-        <item>Find 5 objectives on the map</item>
-        <item>Idk</item>
-        <item>Win the game</item>
+    <string-array name="description">
+        <item> Find Flux</item>
+        <item>Find the first objective</item>
+        <item>Find Luna</item>
+        <item>Find 5 objectives</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

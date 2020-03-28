@@ -67,14 +67,18 @@ public class HintList {
             switch(content) {
                 case 0:
                     str = "Easy";
+                    break;
                 case 1:
                     str = "Medium";
+                    break;
                 case 2:
                     str = "Hard";
+                    break;
                 default:
                     str = "Extreme";
-                this.content = str;
+
             }
+            this.content = str;
         }
 
         @Override
