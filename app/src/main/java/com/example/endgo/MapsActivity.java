@@ -155,6 +155,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                 // when we have found the location we zoom in on it
                 if (task.isComplete()) {
                     Location location = task.getResult();
+                    // if location off do nothing, the map will just tsay zoomed out
+                    if (location == null) {
+                        return;
+                    }
                     LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 10));
                 }
