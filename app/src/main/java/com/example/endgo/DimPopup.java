@@ -20,7 +20,7 @@ public class DimPopup extends PopupWindow {
     }
 
     // will dim the stuff outside of our DimPopup
-    public void dimBehind() {
+    public void dimBackground() {
         View container = this.getContentView().getRootView();
         Context context = this.getContentView().getContext();
         WindowManager manager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
