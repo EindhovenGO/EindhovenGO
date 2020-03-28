@@ -4,26 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import android.content.Context;
-import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.example.endgo.DifficultyFragment;
-import com.example.endgo.HintFragment;
-import com.example.endgo.QuitFragment;
-import com.example.endgo.HintList;
 
 public class GSettingsActivity extends AppCompatActivity implements HintFragment.OnListFragmentInteractionListener {
 
@@ -90,7 +79,7 @@ public class GSettingsActivity extends AppCompatActivity implements HintFragment
         //display the popup window
         popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
-        popupWindow.dimBehind();
+        popupWindow.dimBackground();
 
         // set the popupWindow text to the hint details
         text.setText(item.content);
