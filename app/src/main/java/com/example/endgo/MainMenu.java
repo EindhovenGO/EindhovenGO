@@ -228,6 +228,8 @@ public class MainMenu extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.nav_achievements) {
             Intent intent = new Intent(MainMenu.this, AchievementsActivity.class);
+            intent.putExtra("points", points);
+            intent.putExtra("username", username);
             startActivity(intent);
         }
 
