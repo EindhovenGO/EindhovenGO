@@ -36,6 +36,12 @@
 
     </string>
 
+    <!--Achievement Strings-->
+    <string name="getStarted">Get Started:\n\nAdd a profile picture</string>
+    <string name="theExplorer">The Explorer:\n\nFind 1 objectivee</string>
+    <string name="thePoints">The Points:\n\nObtain 10 points</string>
+    <string name="theHelper">The Helper:\n\nPurchase a hint</string>
+
 
     <!-- Strings for the gsettings activity -->
     <string name="gsettings_difficulty">Difficulty</string>
