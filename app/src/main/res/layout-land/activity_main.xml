@@ -12,14 +12,17 @@
         android:id="@+id/btnLogout"
         android:layout_width="91dp"
         android:layout_height="42dp"
-        android:layout_marginStart="220dp"
-        android:layout_marginBottom="148dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/btn_shape"
         android:onClick="logout"
         android:text="Logout"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnGame"
+        app:layout_constraintEnd_toStartOf="@+id/btnReset"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileEmail" />
 
@@ -28,19 +31,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="Your Profile"
         android:textColor="@color/lightGreen"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/profileName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.613"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06999999" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/profileImage"
@@ -60,76 +61,81 @@
         android:id="@+id/profileName"
         android:layout_width="213dp"
         android:layout_height="46dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="80dp"
         android:text="Your Name"
+        android:textAlignment="center"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/profileEmail"
+        app:layout_constraintEnd_toStartOf="@+id/oldPwd"
         app:layout_constraintStart_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/profileEmail"
         android:layout_width="212dp"
         android:layout_height="40dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="32dp"
         android:text="Your Email Address"
+        android:textAlignment="center"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+        app:layout_constraintEnd_toStartOf="@+id/pwdReset"
         app:layout_constraintStart_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toBottomOf="@+id/profileName"
-        app:layout_constraintVertical_bias="0.038" />
+        app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
     <EditText
         android:id="@+id/pwdReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="208dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="32dp"
         android:ems="10"
         android:hint="New Password"
         android:inputType="textPersonName"
+        android:textAlignment="center"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnReset"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.7"
-        app:layout_constraintStart_toEndOf="@+id/profileEmail" />
+        app:layout_constraintHorizontal_bias="0.879"
+        app:layout_constraintStart_toEndOf="@+id/profileEmail"
+        app:layout_constraintTop_toBottomOf="@+id/oldPwd" />
 
     <Button
         android:id="@+id/btnReset"
         android:layout_width="151dp"
         android:layout_height="44dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/btn_shape"
         android:text="Reset Password"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnGame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.742"
         app:layout_constraintStart_toEndOf="@+id/btnLogout"
-        app:layout_constraintTop_toBottomOf="@+id/pwdReset"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/pwdReset" />
 
     <EditText
         android:id="@+id/oldPwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="40dp"
         android:ems="10"
         android:hint="Old Password"
         android:inputType="textPassword"
+        android:textAlignment="center"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/pwdReset"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.698"
         app:layout_constraintStart_toEndOf="@+id/profileName"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.905" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
         android:id="@+id/btnGame"
@@ -146,9 +152,10 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.585"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.916" />
+        app:layout_constraintVertical_bias="0.948" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
