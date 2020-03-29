@@ -17,7 +17,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/descriptionTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.214"
+        app:layout_constraintHorizontal_bias="0.217"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,4 +68,20 @@
         app:layout_constraintEnd_toStartOf="@+id/pointsTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+
+    <ImageView
+        android:id="@+id/checkBox"
+        android:layout_width="130dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="8dp"
+        android:background="#FFFFFF"
+        android:scaleType="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LockedUnlocked"
+        app:layout_constraintVertical_bias="0.434"
+        app:srcCompat="@drawable/bulb" />
 </androidx.constraintlayout.widget.ConstraintLayout>
