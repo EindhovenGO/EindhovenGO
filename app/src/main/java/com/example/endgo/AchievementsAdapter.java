@@ -81,6 +81,7 @@ public class AchievementsAdapter extends BaseAdapter {
         if (position == 0 && lockUnlock.equals("Locked") && noPoints >= 100) {
             lock[position] = "Unlocked";
             lockUnlock = lock[position];
+            /*
             noPoints += Integer.parseInt(point.substring(0, point.length() - 7));
             Query query = db.child("Users").child(fUser.getUid());
             final int finalNoPoints = noPoints;
@@ -94,6 +95,8 @@ public class AchievementsAdapter extends BaseAdapter {
                  public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
              });
+
+             */
         }
 
         if (lockUnlock.equals("Unlocked")) {
