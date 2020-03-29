@@ -73,6 +73,7 @@ public class Register extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     int CAMERA_PERMISSION = 1;
+    int pictureOK;
     byte[] dataBaos;
 
     @Override
@@ -90,6 +91,7 @@ public class Register extends AppCompatActivity {
         btnUpload = findViewById(R.id.btnUpload);
         storageRef = FirebaseStorage.getInstance().getReference("uploads");
         databaseRef = FirebaseDatabase.getInstance().getReference();  //era cu getReference("Users")
+        pictureOK = 0;
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +131,7 @@ public class Register extends AppCompatActivity {
                     password.setError("Password must be at least 6 characters long");
                 } else if (pwd.length() > 24) {
                     password.setError("Password must be at most 24 characters long");
-                } else if (profileImage.getDrawable() == null) { //imgURI == null
+                } else if (pictureOK == 0) { //imgURI == null
                     Toast.makeText(Register.this, "No picture selected", Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -242,12 +244,16 @@ public class Register extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST) {
-            Bitmap image = (Bitmap) data.getExtras().get("data");
-            profileImage.setImageBitmap(image);
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            dataBaos = baos.toByteArray();
+            if (resultCode == RESULT_OK) {
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                profileImage.setImageBitmap(image);
+                pictureOK = 1;
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                dataBaos = baos.toByteArray();
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(Register.this, "Picture process cancelled", Toast.LENGTH_SHORT).show();
+            }
         }
     }
     /*
