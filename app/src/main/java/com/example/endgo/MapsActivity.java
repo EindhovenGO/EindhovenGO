@@ -232,7 +232,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
     public void createWinPopup() {
         // we create a popupWindow that displays the hintContent view
-        DimPopup popupWindow = new DimPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, false);
+        final DimPopup popupWindow = new DimPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, false);
         ConstraintLayout layout = findViewById(R.id.mapslayout);
         View hintContent = popupWindow.getContentView();
 
@@ -250,6 +250,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                popupWindow.dismiss();
                 finish();
             }
         });
@@ -279,6 +280,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                popupWindow.dismiss();
                 finish();
             }
         });
