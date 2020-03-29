@@ -155,6 +155,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                 // when we have found the location we zoom in on it
                 if (task.isComplete()) {
                     Location location = task.getResult();
+                    // if location off do nothing, the map will just tsay zoomed out
+                    if (location == null) {
+                        return;
+                    }
                     LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 10));
                 }
@@ -228,7 +232,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
     public void createWinPopup() {
         // we create a popupWindow that displays the hintContent view
-        DimPopup popupWindow = new DimPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, false);
+        final DimPopup popupWindow = new DimPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, false);
         ConstraintLayout layout = findViewById(R.id.mapslayout);
         View hintContent = popupWindow.getContentView();
 
@@ -237,7 +241,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         //display the popup window
         popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
-        popupWindow.dimBehind();
+        popupWindow.dimBackground();
 
         // set the popupWindow text to the hint details
         text.setText("You have found the location!\n" + objective.difficulty * 100 + " points have been added to your account");
@@ -246,8 +250,8 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MapsActivity.this, MainMenu.class);
-                startActivity(intent);
+                popupWindow.dismiss();
+                finish();
             }
         });
 
@@ -266,7 +270,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         //display the popup window
         popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
-        popupWindow.dimBehind();
+        popupWindow.dimBackground();
 
         // set the popupWindow text to the hint details
         text.setText("Please give us permission to use your location!");
@@ -276,8 +280,8 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MapsActivity.this, MainMenu.class);
-                startActivity(intent);
+                popupWindow.dismiss();
+                finish();
             }
         });
 

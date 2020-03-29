@@ -227,7 +227,9 @@ public class MainMenu extends AppCompatActivity
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
         } else if (id == R.id.nav_achievements) {
-            Intent intent = new Intent(getApplicationContext(), AchievementsActivity.class);
+            Intent intent = new Intent(MainMenu.this, AchievementsActivity.class);
+            intent.putExtra("points", points);
+            intent.putExtra("username", username);
             startActivity(intent);
         }
 
@@ -263,7 +265,8 @@ public class MainMenu extends AppCompatActivity
      */
     private void getPoints() {
         points = -1;
-        FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        // we add a value event listener to update profile information whenever profile info is updated
+        FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int p;
@@ -276,7 +279,8 @@ public class MainMenu extends AppCompatActivity
                     View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
                     TextView userPoints = header.findViewById(R.id.drawer_points);
                     if (userPoints == null) {} else {
-                        String pointz = userPoints.getText() +"" + p;
+                        // update the points with the points symbol in front of it
+                        String pointz = getResources().getString(R.string.nav_header_subtitle) + p;
                         userPoints.setText(pointz);
                     }
                 }
