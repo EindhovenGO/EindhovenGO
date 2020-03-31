@@ -67,7 +67,7 @@ public class MainMenu extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
        // setSupportActionBar(toolbar);
-
+/*
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +83,7 @@ public class MainMenu extends AppCompatActivity
                     }
                 }, 500);
             }
-        });
+        }); */
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         FloatingActionButton helpButton = findViewById(R.id.floatingHelpButton);
