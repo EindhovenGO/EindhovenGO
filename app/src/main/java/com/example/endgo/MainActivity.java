@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     TextView username;
     TextView pwdReset;
     TextView oldPassword;
-    ImageView profileImage;
+    //ImageView profileImage;
     Button btnLogout;
     Button btnReset;
     Button btnGame;
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         email = findViewById(R.id.profileEmail);
         oldPassword = findViewById(R.id.oldPwd);
-        profileImage = findViewById(R.id.profileImage);
+        //profileImage = findViewById(R.id.profileImage);
         username = findViewById(R.id.profileName);
         pwdReset = findViewById(R.id.pwdReset);
         btnReset = findViewById(R.id.btnReset);
@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference("uploads");
 
 
-        Glide.with(this )
+        /*Glide.with(this )
                 .load(storageRef)
-                .into(profileImage);
+                .into(profileImage);*/
 
 
         fDB.child("Users").child(userKey).addValueEventListener(new ValueEventListener() {
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             profileImage.setImageURI(imgURI);
         }
     }
-
+*/
 
 
 
