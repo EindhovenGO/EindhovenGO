@@ -1,28 +1,14 @@
 package com.example.endgo;
 
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
-import com.example.endgo.R;
-import com.example.endgo.ObjectiveList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,8 +85,8 @@ public class LocationFragment extends HintFragment {
             //Points = difficulty * 100
             String rest = "\nPoints rewarded: " + o.difficulty +"00";
             rest += ("\nDescription:\n" + o.description);
-            hints.add(new HintList.HintItem(o.name + "\nDifficulty: " + diff + rest, o.name));
-            // The second name is actually used to transfer to the MapsActivity. DO NOT CHANGE
+            hints.add(new HintList.HintItem(o.name + "\nDifficulty: " + diff + rest, o.getDbName()));
+            // The dbName will be passed to MapsActivity. DO NOT CHANGE
         }
 
         return hints;

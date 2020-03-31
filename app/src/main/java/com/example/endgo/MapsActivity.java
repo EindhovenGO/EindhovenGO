@@ -54,8 +54,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
     private FusedLocationProviderClient fusedLocationClient;
     private DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-    FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    FirebaseUser fUser =  fAuth.getCurrentUser();
+    FirebaseUser fUser =  FirebaseAuth.getInstance().getCurrentUser();
     LocationCallback callback;
     int PERMISSION_CODE = 1;
 
@@ -200,6 +199,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
 
     public void loadObjective() {
+        // do nothing if no objectivename
+        if (currentObjectiveName == null) {
+            return;
+        }
         Query query = db.child("Objectives").child(currentObjectiveName);
         // we add a valueeventlistener so we udate the circle on the map on a database change
         // this means the user can see live changes of objective coordinates
@@ -212,6 +215,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
                 //put the queried data into a LocationData object
                 objective = dataSnapshot.getValue(ObjectiveData.class);
+                // do nothing if objective is null
+                if (objective == null) {
+                    return;
+                }
                 objectiveLocation = new Location("");
                 objectiveLocation.setLatitude(objective.latitude);
                 objectiveLocation.setLongitude(objective.longitude);
