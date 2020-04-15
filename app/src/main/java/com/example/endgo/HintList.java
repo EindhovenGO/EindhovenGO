@@ -1,9 +1,7 @@
 package com.example.endgo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A class for managing a list of hints
@@ -15,7 +13,7 @@ public class HintList {
     /**
      * An array of sample (hint) items.
      */
-    public static final List<HintItem> ITEMS = new ArrayList<HintItem>();
+    public static final List<ListItem> ITEMS = new ArrayList<ListItem>();
 
     // amount of items in the list
     private static final int COUNT = 5;
@@ -29,12 +27,12 @@ public class HintList {
 
     // some methods to handle the creation of hintitems
     // TODO: modify these when we can actually load in info from the server
-    private static void addItem(HintItem item) {
+    private static void addItem(ListItem item) {
         ITEMS.add(item);
     }
 
-    private static HintItem createHintItem(int position) {
-        return new HintItem("Hint " + position, makeDetails(position));
+    private static ListItem createHintItem(int position) {
+        return new ListItem("Hint " + position, makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -47,21 +45,21 @@ public class HintList {
     }
 
     /**
-     * A class representing a hint. Contains information such as
-     * the id and content of the hint
+     * A class representing an item used in a scrollable list. Contains information such as
+     * the id and content of the item
      */
-    public static class HintItem {
+    public static class ListItem {
         // the name that will be shown in the hint menu
         public final String name;
         // the text of the hint the user will see when the hint is bought
         public final String content;
 
-        public HintItem(String name, String content) {
+        public ListItem(String name, String content) {
             this.name = name;
             this.content = content;
         }
 
-        public HintItem(String name, int content) {
+        public ListItem(String name, int content) {
             this.name = name;
             String str;
             switch(content) {

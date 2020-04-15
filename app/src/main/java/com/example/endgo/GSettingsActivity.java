@@ -68,7 +68,7 @@ public class GSettingsActivity extends AppCompatActivity implements HintFragment
     }
 
     @Override
-    public void onListFragmentInteraction(HintList.HintItem item) {
+    public void onListFragmentInteraction(HintList.ListItem item) {
         // we create a popupWindow that displays the hintContent view
         DimPopup popupWindow = new DimPopup(this, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
         ConstraintLayout layout = findViewById(R.id.layout);

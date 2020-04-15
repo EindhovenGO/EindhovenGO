@@ -10,19 +10,13 @@ import android.view.ViewGroup;
 
 
 import android.content.Context;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.endgo.R;
-import com.example.endgo.HintList.HintItem;
+import com.example.endgo.HintList.ListItem;
 
 /**
  * A fragment that contains a list of hints which the player can buy
@@ -33,6 +27,7 @@ import com.example.endgo.HintList.HintItem;
 public class HintFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
+    // we will just use a single column for the hint list
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
@@ -70,6 +65,7 @@ public class HintFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
+            // use the right amount of columns
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -84,9 +80,11 @@ public class HintFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        // check if listener implemented
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
+            // if not we throw an exception as the listener must be implemented
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
@@ -105,6 +103,6 @@ public class HintFragment extends Fragment {
      * activity.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(HintItem item);
+        void onListFragmentInteraction(ListItem item);
     }
 }
