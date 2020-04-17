@@ -2,68 +2,48 @@ package com.example.endgo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 public class AdminPage extends AppCompatActivity {
-
 
     TextView location1;
     TextView description1;
     Button updateLocation1;
     String locationName1;
     String descriptionName1;
-
     TextView location2;
     TextView description2;
     Button updateLocation2;
     String locationName2;
     String descriptionName2;
-
     TextView location3;
     TextView description3;
     Button updateLocation3;
     String locationName3;
     String descriptionName3;
-
     TextView location4;
     TextView description4;
     Button updateLocation4;
     String locationName4;
     String descriptionName4;
-
     TextView location5;
     TextView description5;
     Button updateLocation5;
     String locationName5;
     String descriptionName5;
-
     DatabaseReference fDB;
     StorageReference storageRef;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,23 +52,23 @@ public class AdminPage extends AppCompatActivity {
 
         location1 = findViewById(R.id.location1);
         description1 = findViewById(R.id.description1);
-        updateLocation1 = (Button) findViewById(R.id.updateLocation1);
+        updateLocation1 = findViewById(R.id.updateLocation1);
 
         location2 = findViewById(R.id.location2);
         description2 = findViewById(R.id.description2);
-        updateLocation2 = (Button) findViewById(R.id.updateLocation2);
+        updateLocation2 = findViewById(R.id.updateLocation2);
 
         location3 = findViewById(R.id.location3);
         description3 = findViewById(R.id.description3);
-        updateLocation3 = (Button) findViewById(R.id.updateLocation3);
+        updateLocation3 = findViewById(R.id.updateLocation3);
 
         location4 = findViewById(R.id.location4);
         description4 = findViewById(R.id.description4);
-        updateLocation4 = (Button) findViewById(R.id.updateLocation4);
+        updateLocation4 = findViewById(R.id.updateLocation4);
 
         location5 = findViewById(R.id.location5);
         description5 = findViewById(R.id.description5);
-        updateLocation5 = (Button) findViewById(R.id.updateLocation5);
+        updateLocation5 = findViewById(R.id.updateLocation5);
 
         fDB = FirebaseDatabase.getInstance().getReference("Objectives");
         storageRef = FirebaseStorage.getInstance().getReference("uploads");

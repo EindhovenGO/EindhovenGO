@@ -1,34 +1,24 @@
 package com.example.endgo;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.contentcapture.ContentCaptureManager;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -40,17 +30,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
-import java.util.EventListener;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Register extends AppCompatActivity {
 
@@ -60,17 +44,11 @@ public class Register extends AppCompatActivity {
     TextView tvLogin;
     FirebaseAuth fAuth;
     int PICK_IMAGE_REQUEST = 1;
-    Uri imgURI;
     ImageView profileImage;
     StorageTask uploadTask;
     StorageReference storageRef;
     DatabaseReference databaseRef;
     FirebaseUser fUser;
-
-    //database variables
-    String keyTitle = "title";
-    String keyDescription = "description";
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     int CAMERA_PERMISSION = 1;
     int pictureOK;
@@ -90,23 +68,13 @@ public class Register extends AppCompatActivity {
         profileImage = findViewById(R.id.profileImage);
         btnUpload = findViewById(R.id.btnUpload);
         storageRef = FirebaseStorage.getInstance().getReference("uploads");
-        databaseRef = FirebaseDatabase.getInstance().getReference();  //era cu getReference("Users")
+        databaseRef = FirebaseDatabase.getInstance().getReference();
         pictureOK = 0;
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ask permission for camera usage
                 askCameraPermission();
-
-                /*
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivity(i);
-                i.setType("image/*");
-                i.setAction(Intent.ACTION_GET_CONTENT);
-                i.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(i, PICK_IMAGE_REQUEST);
-                 */
             }
         });
 
@@ -206,15 +174,6 @@ public class Register extends AppCompatActivity {
 
     }
 
-    /*
-    private String getFileExtension(Uri uri) {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
-    }
-
-     */
-
     private void askCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION);
@@ -256,19 +215,4 @@ public class Register extends AppCompatActivity {
             }
         }
     }
-    /*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            imgURI = data.getData();
-
-            profileImage.setImageURI(imgURI);
-        }
-    }
-
-     */
-
 }

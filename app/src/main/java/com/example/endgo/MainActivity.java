@@ -1,19 +1,14 @@
 package com.example.endgo;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -31,13 +26,10 @@ import com.google.firebase.storage.StorageReference;
 
 public class MainActivity extends AppCompatActivity {
 
-    int PICK_IMAGE_REQUEST = 1;
-    Uri imgURI;
     TextView email;
     TextView username;
     TextView pwdReset;
     TextView oldPassword;
-    //ImageView profileImage;
     Button btnLogout;
     Button btnReset;
     Button btnGame;
@@ -48,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     String userKey;
     String name;
     FirebaseFirestore fStore;
-    String profileImageUrl;
     StorageReference storageRef;
 
 
@@ -57,34 +48,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         email = findViewById(R.id.profileEmail);
         oldPassword = findViewById(R.id.oldPwd);
-        //profileImage = findViewById(R.id.profileImage);
         username = findViewById(R.id.profileName);
         pwdReset = findViewById(R.id.pwdReset);
         btnReset = findViewById(R.id.btnReset);
         btnLogout = findViewById(R.id.btnLogout);
         btnGame = findViewById(R.id.btnGame);
-
         fAuth = FirebaseAuth.getInstance();
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         userKey = fUser.getUid();
 
         email.setText(fUser.getEmail());
 
-
-
         fDatabase = FirebaseDatabase.getInstance();
         fDB = fDatabase.getReference();
         fStore = FirebaseFirestore.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference("uploads");
-
-
-        /*Glide.with(this )
-                .load(storageRef)
-                .into(profileImage);*/
-
 
         fDB.child("Users").child(userKey).addValueEventListener(new ValueEventListener() {
             @Override
@@ -158,71 +138,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
-
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            imgURI = data.getData();
-
-            profileImage.setImageURI(imgURI);
-        }
-    }
-*/
-
-
-
-/*
-    public void imageClick(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity((getPackageManager())) != null) {
-            startActivityForResult(intent, imageCode);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == imageCode) {
-            switch (resultCode) {
-                case RESULT_OK:
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    profileImage.setImageBitmap(bitmap);
-                    handleUpload(bitmap);
-            }
-        }
-    }
-
-    void handleUpload(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
-        final StorageReference reference = FirebaseStorage.getInstance().getReference().child("")
-                .child(userKey + ".jpeg");
-        reference.putBytes(baos.toByteArray()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        UserProfileChangeRequest request = new UserProfileChangeRequest()
-                                .Builder().setPhotoUri(uri).build();
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
-    }
-
- */
 }
