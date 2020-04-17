@@ -7,19 +7,18 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.endgo.R;
 import com.example.endgo.HintFragment.OnListFragmentInteractionListener;
-import com.example.endgo.HintList.HintItem;
+import com.example.endgo.HintList.ListItem;
 
 import java.util.List;
 
 
 public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
 
-    protected final List<HintItem> mValues;
+    protected final List<ListItem> mValues;
     protected final OnListFragmentInteractionListener mListener;
 
-    public ItemRecyclerViewAdapter(List<HintItem> items, OnListFragmentInteractionListener listener) {
+    public ItemRecyclerViewAdapter(List<ListItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -57,7 +56,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContentView;
-        public HintItem mItem;
+        public ListItem mItem;
 
         public ViewHolder(View view) {
             super(view);

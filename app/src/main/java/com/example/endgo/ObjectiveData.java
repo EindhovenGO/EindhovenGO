@@ -2,6 +2,9 @@ package com.example.endgo;
 
 public class ObjectiveData {
 
+    // the fields are the same as the information we have in the database for each objective
+    // we use public fields as the getValue function of a datasnapshot can initialize an object
+    // of this type automatically
     public String description;
     public int difficulty;
     public String name;

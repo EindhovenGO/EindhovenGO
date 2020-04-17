@@ -60,8 +60,8 @@ public class LocationFragment extends HintFragment {
         return view;
     }
 
-    private List<HintList.HintItem> objectivesToHints(List<ObjectiveData> items) {
-        List<HintList.HintItem> hints = new ArrayList<>();
+    private List<HintList.ListItem> objectivesToHints(List<ObjectiveData> items) {
+        List<HintList.ListItem> hints = new ArrayList<>();
         for (ObjectiveData o: items ) {
 
             // Convert difficulty integer to String entries
@@ -85,7 +85,7 @@ public class LocationFragment extends HintFragment {
             //Points = difficulty * 100
             String rest = "\nPoints rewarded: " + o.difficulty +"00";
             rest += ("\nDescription:\n" + o.description);
-            hints.add(new HintList.HintItem(o.name + "\nDifficulty: " + diff + rest, o.getDbName()));
+            hints.add(new HintList.ListItem(o.name + "\nDifficulty: " + diff + rest, o.getDbName()));
             // The dbName will be passed to MapsActivity. DO NOT CHANGE
         }
 

@@ -44,19 +44,31 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Activity that contains the map which the player will need to discover
+ * locations
+ */
 public class MapsActivity extends Activity implements OnMapReadyCallback {
 
+    // The map instance
     private GoogleMap mMap;
     private String currentObjectiveName;
+    // contains all information on the current objective we got from the database
     private ObjectiveData objective;
     private Circle objectiveCircle;
+    // location object representing the location of the current object
     private Location objectiveLocation;
 
+    // client to get access to the location of the user
     private FusedLocationProviderClient fusedLocationClient;
+    // a reference to the firebase database
     private DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-    FirebaseUser fUser =  FirebaseAuth.getInstance().getCurrentUser();
-    LocationCallback callback;
-    int PERMISSION_CODE = 1;
+    // the current user that is logged in
+    private FirebaseUser fUser =  FirebaseAuth.getInstance().getCurrentUser();
+    // callback is global so we always have access to disable it
+    private LocationCallback callback;
+    // the permission code we use to ask for location permission
+    private int PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +85,9 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         handlePermissions();
     }
 
+    /**
+     * Check if we have location permission. If not ask for it, if we do we can continue with initialization
+     */
     public void handlePermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -85,6 +100,9 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         }
     }
 
+    /**
+     * Initialize the map to show on screen. Includes location updates and objective circle
+     */
     public void initMap() {
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
@@ -147,6 +165,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
     }
 
+    /**
+     * Get the last known location of the user and make the camera focus on that location
+     * @throws SecurityException
+     */
     public void focusUserLocation() throws SecurityException {
         fusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
@@ -186,8 +208,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         focusUserLocation();
     }
 
-    // Will add a transparent green circle to the map at given coordinates
-    // with specified radius
+    /**
+     * Will add a transparent green circle to the map at given coordinates
+     * with specified radius
+     */
     public void addCircle(GoogleMap map, LatLng center, float radius) {
         CircleOptions cOptions = new CircleOptions();
         cOptions.center(center);
@@ -197,14 +221,16 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         objectiveCircle = map.addCircle(cOptions);
     }
 
-
+    /**
+     * Get the chosen objective from the database and display it on the map with a green circle
+     */
     public void loadObjective() {
         // do nothing if no objectivename
         if (currentObjectiveName == null) {
             return;
         }
         Query query = db.child("Objectives").child(currentObjectiveName);
-        // we add a valueeventlistener so we udate the circle on the map on a database change
+        // we add a value eventlistener so we update the circle on the map on a database change
         // this means the user can see live changes of objective coordinates
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -213,7 +239,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                     objectiveCircle.remove();
                 }
 
-                //put the queried data into a LocationData object
+                //put the queried data into a ObjectiveData object
                 objective = dataSnapshot.getValue(ObjectiveData.class);
                 // do nothing if objective is null
                 if (objective == null) {
@@ -237,9 +263,13 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         });
     }
 
+    /**
+     * Create a popup for when the user wins. Indicated points added to user account
+     */
     public void createWinPopup() {
         // we create a popupWindow that displays the hintContent view
-        final DimPopup popupWindow = new DimPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, false);
+        final DimPopup popupWindow = new DimPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, false);
         ConstraintLayout layout = findViewById(R.id.mapslayout);
         View hintContent = popupWindow.getContentView();
 
@@ -266,9 +296,14 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         popLayout.addView(button);
     }
 
-    public void createAlertPopup() {
+    /**
+     * Create a popup for when the user has not given location access. Gives the user the option
+     * to set permission again
+     */
+    public void createLocationAlertPopup() {
         // we create a popupWindow that displays the hintContent view
-        final DimPopup popupWindow = new DimPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, false);
+        final DimPopup popupWindow = new DimPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, false);
         ConstraintLayout layout = findViewById(R.id.mapslayout);
         View hintContent = popupWindow.getContentView();
 
@@ -318,7 +353,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                 initMap();
             } else {
                 // otherwise create alert to ask user again for permission
-                createAlertPopup();
+                createLocationAlertPopup();
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

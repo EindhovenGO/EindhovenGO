@@ -45,26 +45,8 @@ public class MainMenu extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_main);
 
-
+        //Declarations for drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
-       // setSupportActionBar(toolbar);
-/*
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, R.string.menu_toSettings, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent i = new Intent(MainMenu.this, GSettingsActivity.class);
-                        startActivity(i);
-                    }
-                }, 500);
-            }
-        }); */
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         FloatingActionButton helpButton = findViewById(R.id.floatingHelpButton);
@@ -116,8 +98,7 @@ public class MainMenu extends AppCompatActivity
             }
         });
 
-        // TODO: loading drawable as placeholder
-        //Wait 1 second before updating the Objective list
+        //Wait 3 seconds before updating the Objective list
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -196,20 +177,24 @@ public class MainMenu extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            // To Profile
+            // To Profile activity
+            // Includes user data
             Intent i = new Intent(MainMenu.this, UserProfile.class);
             i.putExtra("points", points);
             i.putExtra("username", username);
             i.putExtra("email", email);
             startActivity(i);
         } else if (id == R.id.nav_logout) {
-            // Logout
+            // To Login activity
+            // Logs out the user in the process
             FirebaseAuth.getInstance().signOut();
             Intent i = new Intent(MainMenu.this, Login.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
         } else if (id == R.id.nav_achievements) {
+            // To achievements activity
+            // Includes necessary user data
             Intent intent = new Intent(MainMenu.this, AchievementsActivity.class);
             intent.putExtra("points", points);
             intent.putExtra("username", username);
@@ -223,9 +208,6 @@ public class MainMenu extends AppCompatActivity
 
     /**
      * Obtains user info. (Name, points and completed objective id's)
-     * Obtains current objectives.
-     * Checks what objectives are not completed.
-     * Filters out completed objectives.
      */
     private void getUserInfo() {
         fAuth = FirebaseAuth.getInstance();
@@ -278,8 +260,9 @@ public class MainMenu extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(HintList.HintItem item) {
-        // On clicking on a list fragment, the location should be sent WITH the intent
+    public void onListFragmentInteraction(HintList.ListItem item) {
+        // On clicking on a list fragment, the maps activity opens.
+        // Includes objective name
         String objectiveName = item.content;
 
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);

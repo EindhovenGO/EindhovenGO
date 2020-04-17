@@ -5,15 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
-import com.example.endgo.ItemRecyclerViewAdapter.*;
-import com.example.endgo.HintList;
-import com.example.endgo.HintFragment;
-import com.example.endgo.LocationFragment;
 
 
 public class LocationRecyclerViewAdapter extends ItemRecyclerViewAdapter {
 
-    public LocationRecyclerViewAdapter(List<HintList.HintItem> items, HintFragment.OnListFragmentInteractionListener listener) {
+    public LocationRecyclerViewAdapter(List<HintList.ListItem> items, HintFragment.OnListFragmentInteractionListener listener) {
         super(items, listener);
     }
 

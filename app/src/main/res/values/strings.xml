@@ -84,23 +84,8 @@
         <item>Milestone 3: reach 800 points</item>
         <item>Milestone 4: reach 1000 points</item>
         <item>Milestone 5: reach 1500 points</item>
-        <!--<item>The Engineer</item>
-        <item>Get started</item>
-        <item>To the moon and back</item>
-        <item>The traveller</item>-->
     </string-array>
 
-    <string-array name="points">
-        <item>100 points</item>
-        <item>100 points</item>
-        <item>100 points</item>
-        <item>100 points</item>
-        <item>100 points</item>
-        <!--<item>500 points</item>
-        <item>100 points</item>
-        <item>600 points</item>
-        <item>1000 points</item>-->
-    </string-array>
 
     <string-array name="description">
         <item> Reach 100 points on this account</item>
@@ -108,10 +93,6 @@
         <item> Reach 800 points on this account</item>
         <item> Reach 1000 points on this account</item>
         <item> Reach 1500 points on this account</item>
-        <!--<item> Find Flux building in the TU/e campus</item>
-        <item>Find the first objective on the map</item>
-        <item>Find Luna building </item>
-        <item>Find 5 objectives on the map</item> -->
     </string-array>
 
     <string-array name="locked">
@@ -120,10 +101,6 @@
         <item>Locked</item>
         <item>Locked</item>
         <item>Locked</item>
-        <!--<item>Locked</item>
-        <item>Locked</item>
-        <item>Locked</item>
-        <item>Locked</item> -->
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
